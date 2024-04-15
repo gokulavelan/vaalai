@@ -1,9 +1,9 @@
 <div class="card card-outline card-primary">
     <div class="card-header text-center">
-        <a [routerLink]="['/']" class="h1"><b>Admin</b>LTE</a>
+        <a [routerLink]="['/']" class="h1"><b>Anantha</b>Software</a>
     </div>
     <div class="card-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Sign In</p>
 
         <form [formGroup]="loginForm" (ngSubmit)="loginByAuth()">
             <div class="input-group mb-3">
@@ -54,36 +54,15 @@
             </div>
         </form>
 
-        <div class="social-auth-links text-center mb-3">
-            <pf-button
-                class="mb-2"
-                [variant]="'primary'"
-                [loading]="isFacebookLoading"
-                [disabled]="isAuthLoading || isGoogleLoading"
-                (click)="loginByFacebook()"
-            >
-                <i class="fab fa-facebook mr-2"></i>
-                Sign in using Facebook
-            </pf-button>
-            <pf-button
-                [variant]="'danger'"
-                [loading]="isGoogleLoading"
-                [disabled]="isAuthLoading || isFacebookLoading"
-                (click)="loginByGoogle()"
-            >
-                <i class="fab fa-google mr-2"></i>
-                Sign in using Google+
-            </pf-button>
-        </div>
 
-        <p class="mb-1">
+        <!-- <p class="mb-1">
             <a [routerLink]="['/forgot-password']">I forgot my password</a>
         </p>
         <p class="mb-0">
             <a [routerLink]="['/register']" class="text-center">
                 Register a new membership
             </a>
-        </p>
+        </p> -->
     </div>
     <!-- /.login-card-body -->
 </div>

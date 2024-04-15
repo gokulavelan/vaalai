@@ -16,7 +16,7 @@ export class AppService {
           console.log('email',email)
             await authLogin(email, password);
             await this.getProfile();
-            this.router.navigate(['/']);
+            this.router.navigate(['/company-select']);
             this.toastr.success('Login success');
         } catch (error) {
             this.toastr.error(error.message);
@@ -29,42 +29,6 @@ export class AppService {
           await this.getProfile();
           this.router.navigate(['/']);
           this.toastr.success('Register success');
-        } catch (error) {
-            this.toastr.error(error.message);
-        }
-    }
-
-    async loginByGoogle() {
-        try {
-          this.toastr.warning('Not implemented');
-
-        } catch (error) {
-            this.toastr.error(error.message);
-        }
-    }
-
-    async registerByGoogle() {
-        try {
-          this.toastr.warning('Not implemented');
-
-        } catch (error) {
-            this.toastr.error(error.message);
-        }
-    }
-
-    async loginByFacebook() {
-        try {
-          this.toastr.warning('Not implemented');
-
-        } catch (error) {
-            this.toastr.error(error.message);
-        }
-    }
-
-    async registerByFacebook() {
-        try {
-
-            this.toastr.warning('Not implemented');
         } catch (error) {
             this.toastr.error(error.message);
         }
@@ -99,7 +63,7 @@ export const authLogin = (email: string, password: string) => {
     if (email === 'admin@example.com' && password === 'admin') {
       localStorage.setItem(
         'authentication',
-        JSON.stringify({ profile: { email: 'admin@example.com' } })
+        JSON.stringify({ profile: { email: 'admin@example.com' , name: 'admin'} })
       );
       return res({ profile: { email: 'admin@example.com' } });
     }

@@ -37,6 +37,14 @@ import {SidebarSearchComponent} from './components/sidebar-search/sidebar-search
 import {NgxGoogleAnalyticsModule} from 'ngx-google-analytics';
 import { environment } from 'environments/environment';
 
+import { AccountMasterComponent } from '@pages/masters/account-master/account-master.component';
+import { DataTablesModule } from "angular-datatables";
+import { NewAccountComponent } from './pages/masters/account-master/new-account/new-account.component';
+import { CompanySelectComponent } from './modules/company-select/company-select.component';
+import { SubGroupsComponent } from './pages/masters/account-master/sub-groups/sub-groups.component';
+import { AccountGroupingComponent } from './pages/masters/account-master/account-grouping/account-grouping.component';
+
+
 registerLocaleData(localeEn, 'en-EN');
 
 @NgModule({
@@ -61,7 +69,12 @@ registerLocaleData(localeEn, 'en-EN');
         SubMenuComponent,
         MenuItemComponent,
         ControlSidebarComponent,
-        SidebarSearchComponent
+        SidebarSearchComponent,
+        AccountMasterComponent,
+        NewAccountComponent,
+        CompanySelectComponent,
+        SubGroupsComponent,
+        AccountGroupingComponent
     ],
     imports: [
         ProfabricComponentsModule,
@@ -77,7 +90,8 @@ registerLocaleData(localeEn, 'en-EN');
             positionClass: 'toast-top-right',
             preventDuplicates: true
         }),
-        NgxGoogleAnalyticsModule.forRoot(environment.GA_ID)
+        NgxGoogleAnalyticsModule.forRoot(environment.GA_ID),
+        DataTablesModule
     ],
     providers: [],
     bootstrap: [AppComponent]

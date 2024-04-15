@@ -49,19 +49,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.toastr.error('Form is not valid!');
         }
     }
-
-    async registerByGoogle() {
-        this.isGoogleLoading = true;
-        await this.appService.registerByGoogle();
-        this.isGoogleLoading = false;
-    }
-
-    async registerByFacebook() {
-        this.isFacebookLoading = true;
-        await this.appService.registerByFacebook();
-        this.isFacebookLoading = false;
-    }
-
     ngOnDestroy() {
         this.renderer.removeClass(
             document.querySelector('app-root'),

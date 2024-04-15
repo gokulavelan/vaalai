@@ -12,15 +12,8 @@
         ></i>
     </p>
 </a>
-<ul class="nav nav-treeview" *ngFor="let item of menuItem.children" [@openClose]="isMenuExtended">
-    <li class="nav-item">
-        <a
-            [routerLink]="item.path"
-            [routerLinkActive]="'active'"
-            class="nav-link"
-        >
-            <i class="nav-icon {{ item.iconClasses }}"></i>
-            <p>{{ item.name }}</p>
-        </a>
+<ul class="nav nav-treeview" *ngIf="isExpandable && isMenuExtended">
+    <li class="nav-item" *ngFor="let item of menuItem.children">
+        <app-menu-item [menuItem]="item"></app-menu-item>
     </li>
 </ul>

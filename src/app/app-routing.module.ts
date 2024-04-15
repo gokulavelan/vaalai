@@ -11,7 +11,11 @@ import {NonAuthGuard} from '@guards/non-auth.guard';
 import {ForgotPasswordComponent} from '@modules/forgot-password/forgot-password.component';
 import {RecoverPasswordComponent} from '@modules/recover-password/recover-password.component';
 import {SubMenuComponent} from '@pages/main-menu/sub-menu/sub-menu.component';
-
+import { AccountMasterComponent } from '@pages/masters/account-master/account-master.component';
+import { NewAccountComponent } from '@pages/masters/account-master/new-account/new-account.component';
+import { SubGroupsComponent } from '@pages/masters/account-master/sub-groups/sub-groups.component';
+import { AccountGroupingComponent } from '@pages/masters/account-master/account-grouping/account-grouping.component';
+import { CompanySelectComponent } from '@modules/company-select/company-select.component';
 const routes: Routes = [
     {
         path: '',
@@ -28,12 +32,34 @@ const routes: Routes = [
                 component: BlankComponent
             },
             {
-                path: 'sub-menu-1',
+                path: 'account-master',
+                children: [
+                    {
+                        path: '',
+                        component: AccountMasterComponent
+                    },
+                    {
+                        path: 'new-account',
+                        component: NewAccountComponent
+                    },
+                    {
+                        path: 'sub-groups',
+                        component: SubGroupsComponent
+                    },
+                    {
+                        path: 'account-grouping',
+                        component: AccountGroupingComponent
+                    },
+                    
+                ]
+            },
+            {
+                path: 'sub-menu-2',
                 component: SubMenuComponent
             },
             {
                 path: 'sub-menu-2',
-                component: BlankComponent
+                component: SubMenuComponent
             },
             {
                 path: '',
@@ -45,6 +71,11 @@ const routes: Routes = [
         path: 'login',
         component: LoginComponent,
         canActivate: [NonAuthGuard]
+    },
+    {
+        path: 'company-select',
+        component: CompanySelectComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'register',

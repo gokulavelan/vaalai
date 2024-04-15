@@ -38,24 +38,119 @@ export const MENU = [
         iconClasses: 'fas fa-tachometer-alt',
         path: ['/']
     },
+    // {
+    //     name: 'Blank',
+    //     iconClasses: 'fas fa-file',
+    //     path: ['/blank']
+    // },
     {
-        name: 'Blank',
-        iconClasses: 'fas fa-file',
-        path: ['/blank']
-    },
-    {
-        name: 'Main Menu',
+        name: 'Masters',
         iconClasses: 'fas fa-folder',
         children: [
             {
-                name: 'Sub Menu',
+                name: 'Accounts',
                 iconClasses: 'far fa-address-book',
-                path: ['/sub-menu-1']
+                children: [
+                    {
+                        name: 'Account Master',
+                        iconClasses: 'fas fa-file',
+                        path: ['/account-master']
+                    },
+                    {
+                        name: 'Sub Groups',
+                        iconClasses: 'fas fa-file',
+                        path: ['/account-master/sub-groups']
+                    },
+                    {
+                        name: 'Account Groups',
+                        iconClasses: 'fas fa-file',
+                        path: ['/accountGroups']
+                    },
+                    {
+                        name: 'Account Grouping',
+                        iconClasses: 'fas fa-file',
+                        path: ['/accountGrouping']
+                    },
+                ]
             },
             {
-                name: 'Blank',
+                name: 'Tax',
                 iconClasses: 'fas fa-file',
-                path: ['/sub-menu-2']
+                children: [
+                    {
+                        name: 'Purchase Tax Setting',
+                        iconClasses: 'fas fa-file',
+                        path: ['/purchaseTaxSet']
+                    },
+                    {
+                        name: 'Sales Tax Setting',
+                        iconClasses: 'fas fa-file',
+                        path: ['/salesTaxSet']
+                    },
+                    {
+                        name: 'Tax Master',
+                        iconClasses: 'fas fa-file',
+                        path: ['/taxMaster']
+                    }
+                ]
+            },
+            {
+                name: 'Product',
+                iconClasses: 'fas fa-file',
+                children: [
+                    {
+                        name: 'Item Master',
+                        iconClasses: 'fas fa-file',
+                        path: ['/itemMaster']
+                    },
+                    {
+                        name: 'Brand Master',
+                        iconClasses: 'fas fa-file',
+                        path: ['/brandMaster']
+                    },
+                    {
+                        name: 'Category Master',
+                        iconClasses: 'fas fa-file',
+                        path: ['/categoryMaster']
+                    },
+                    {
+                        name: 'Correction',
+                        iconClasses: 'fas fa-file',
+                        path: ['/correction']
+                    },
+                ]
+            },
+            {
+                name: 'Others',
+                iconClasses: 'fas fa-file',
+                children: [
+                    {
+                        name: 'State',
+                        iconClasses: 'fas fa-file',
+                        path: ['/stateMaster']
+                    },
+                    {
+                        name: 'City',
+                        iconClasses: 'fas fa-file',
+                        path: ['/sub-menu-3']
+                    },
+                    {
+                        name: 'Area',
+                        iconClasses: 'fas fa-file',
+                        path: ['/sub-menu-2']
+                    },
+                    {
+                        name: 'Bank',
+                        iconClasses: 'fas fa-file',
+                        path: ['/sub-menu-3']
+                    },
+                    ,
+                    {
+                        name: 'Unit',
+                        iconClasses: 'fas fa-file',
+                        path: ['/sub-menu-3']
+                    }
+                ]
             }
         ]
     }
