@@ -1,0 +1,78 @@
+<p>brand-master works!</p>
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Brand Master</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item active">Brand Master</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3>Brand List</h3>
+            </div>
+            <div class="card-body">
+              <table datatable [dtOptions]="dtOptions" class="row-border hover">
+                <thead>
+                  <tr>
+                    <th>Brand No</th>
+                    <th>Brand Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let brand of brands">
+                    <td>{{ brand.brandNo }}</td>
+                    <td>{{ brand.brandName }}</td>
+                    <td class="project-actions">
+                      <a class="btn btn-info btn-sm" href="#" (click)="editBrand(brand)">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                      </a>&nbsp;
+                      <a class="btn btn-danger btn-sm" href="#" (click)="deleteBrand(brand)">
+                        <i class="fas fa-trash"></i> Delete
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3>New Brand</h3>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <label for="brandName">Brand Name</label>
+                  <input type="text" class="form-control" id="brandName" formControlName="brandName" placeholder="Enter Brand Name">
+                  <div *ngIf="brandForm.get('brandName').invalid && (brandForm.get('brandName').dirty || brandForm.get('brandName').touched)" class="text-danger">
+                    <div *ngIf="brandForm.get('brandName').errors.required">
+                      Brand Name is required.
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="brandForm.invalid">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

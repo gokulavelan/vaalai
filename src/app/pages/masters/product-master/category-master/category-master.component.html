@@ -1,0 +1,77 @@
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Category Master</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item active">Category Master</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3>Category List</h3>
+            </div>
+            <div class="card-body">
+              <table datatable [dtOptions]="dtOptions" class="row-border hover">
+                <thead>
+                  <tr>
+                    <th>Category No</th>
+                    <th>Category Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let category of categories">
+                    <td>{{ category.categoryNo }}</td>
+                    <td>{{ category.categoryName }}</td>
+                    <td class="project-actions">
+                      <a class="btn btn-info btn-sm" href="#" (click)="editCategory(category)">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                      </a>&nbsp;
+                      <a class="btn btn-danger btn-sm" href="#" (click)="deleteCategory(category)">
+                        <i class="fas fa-trash"></i> Delete
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3>New Category</h3>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <label for="categoryName">Category Name</label>
+                  <input type="text" class="form-control" id="categoryName" formControlName="categoryName" placeholder="Enter Category Name">
+                  <div *ngIf="categoryForm.get('categoryName').invalid && (categoryForm.get('categoryName').dirty || categoryForm.get('categoryName').touched)" class="text-danger">
+                    <div *ngIf="categoryForm.get('categoryName').errors.required">
+                      Category Name is required.
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

@@ -36,7 +36,7 @@
     "@angular-eslint/eslint-plugin-template": "17.2.1",
     "@angular-eslint/schematics": "17.2.1",
     "@angular-eslint/template-parser": "17.2.1",
-    "@angular/cli": "17.2.0",
+    "@angular/cli": "^17.2.0",
     "@angular/compiler-cli": "17.2.1",
     "@angular/language-service": "17.2.1",
     "@types/datatables.net": "^1.10.21",
@@ -195,11 +195,11 @@
       },
       {
         "file": "package-lock.json",
-        "hash": "7902774216089393641"
+        "hash": "9231951354517054039"
       },
       {
         "file": "package.json",
-        "hash": "9982115595176871860"
+        "hash": "2609758873401485434"
       },
       {
         "file": "src/app/app-routing.module.ts",

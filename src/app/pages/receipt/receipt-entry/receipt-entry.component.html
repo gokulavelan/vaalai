@@ -1,0 +1,99 @@
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Receipt</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item active">Receipt</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-outline card-primary">
+            <div class="card-header">
+              <h3 class="card-title">New Receipt</h3>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="receiptForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="receiptNo">Receipt No</label>
+                      <input type="text" class="form-control" id="receiptNo" formControlName="receiptNo" disabled>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label>Payment Type</label><br>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="paymentType" value="Cash" (change)="onPaymentTypeChange($event)">
+                        <label class="form-check-label" for="cash">Cash</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="paymentType" value="Bank" (change)="onPaymentTypeChange($event)">
+                        <label class="form-check-label" for="bank">Bank</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="date">Date</label>
+                      <input type="date" class="form-control" id="date" formControlName="date">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="bankName">Bank Name</label>
+                  <select class="form-control" id="bankName" formControlName="bankName" [disabled]="isCash">
+                    <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="accountName">Account Name</label>
+                  <select class="form-control" id="accountName" formControlName="accountName">
+                    <option *ngFor="let account of accounts" [value]="account">{{ account }}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="particulars">Particulars</label>
+                  <input type="text" class="form-control" id="particulars" formControlName="particulars">
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="amount">Amount</label>
+                      <input type="number" class="form-control" id="amount" formControlName="amount">
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="cashDiscount">Cash Discount</label>
+                      <input type="number" class="form-control" id="cashDiscount" formControlName="cashDiscount">
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="commission">Commission</label>
+                      <input type="number" class="form-control" id="commission" formControlName="commission" [disabled]="isCash">
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary right" [disabled]="receiptForm.invalid">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

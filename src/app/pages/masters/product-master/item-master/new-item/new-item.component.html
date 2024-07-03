@@ -1,0 +1,253 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>New Item Master</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
+                    <li class="breadcrumb-item active">New Item Master</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-primary card-outline">
+            <div id="stepper1" class="bs-stepper">
+                <div class="bs-stepper-header">
+                    <div class="step" data-target="#test-l-1">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle">1</span>
+                            <span class="bs-stepper-label">Item Details</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    <div class="step" data-target="#test-l-2">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle">2</span>
+                            <span class="bs-stepper-label">Tax Details</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="bs-stepper-content">
+                    <form [formGroup]="itemMasterForm" (ngSubmit)="onSubmit()">
+                        <!-- Item Details -->
+                        <div id="test-l-1" class="content">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="itemName">Item Name</label>
+                                        <input type="text" class="form-control" id="itemName" formControlName="itemName" placeholder="Enter Item Name">
+                                        <div *ngIf="itemMasterForm.get('itemName')?.invalid && itemMasterForm.get('itemName')?.touched" class="text-danger">
+                                            Item Name is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="unit">Unit</label>
+                                        <select class="form-control" id="unit" formControlName="unit">
+                                            <option value="" disabled>Select Unit</option>
+                                            <option value="kg">KG</option>
+                                            <option value="nos">NOs</option>
+                                        </select>
+                                        <div *ngIf="itemMasterForm.get('unit')?.invalid && itemMasterForm.get('unit')?.touched" class="text-danger">
+                                            Unit is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dimension">Dimension</label>
+                                        <input type="number" class="form-control" id="dimension" formControlName="dimension" placeholder="Enter Dimension">
+                                        <div *ngIf="itemMasterForm.get('dimension')?.invalid && itemMasterForm.get('dimension')?.touched" class="text-danger">
+                                            Dimension is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="weight">Weight</label>
+                                        <input type="number" class="form-control" id="weight" formControlName="weight" placeholder="Enter Weight">
+                                        <div *ngIf="itemMasterForm.get('weight')?.invalid && itemMasterForm.get('weight')?.touched" class="text-danger">
+                                            Weight is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <input type="text" class="form-control" id="description" formControlName="description" placeholder="Enter Description">
+                                        <div *ngIf="itemMasterForm.get('description')?.invalid && itemMasterForm.get('description')?.touched" class="text-danger">
+                                            Description is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="purchaseRate">Purchase Rate</label>
+                                        <input type="number" class="form-control" id="purchaseRate" formControlName="purchaseRate" placeholder="Enter Purchase Rate">
+                                        <div *ngIf="itemMasterForm.get('purchaseRate')?.invalid && itemMasterForm.get('purchaseRate')?.touched" class="text-danger">
+                                            Purchase Rate is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="costRate">Cost Rate</label>
+                                        <input type="number" class="form-control" id="costRate" formControlName="costRate" placeholder="Enter Cost Rate">
+                                        <div *ngIf="itemMasterForm.get('costRate')?.invalid && itemMasterForm.get('costRate')?.touched" class="text-danger">
+                                            Cost Rate is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wsRate">W.S Rate</label>
+                                        <input type="number" class="form-control" id="wsRate" formControlName="wsRate" placeholder="Enter W.S Rate">
+                                        <div *ngIf="itemMasterForm.get('wsRate')?.invalid && itemMasterForm.get('wsRate')?.touched" class="text-danger">
+                                            W.S Rate is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="retailRate">Retail Rate</label>
+                                        <input type="number" class="form-control" id="retailRate" formControlName="retailRate" placeholder="Enter Retail Rate">
+                                        <div *ngIf="itemMasterForm.get('retailRate')?.invalid && itemMasterForm.get('retailRate')?.touched" class="text-danger">
+                                            Retail Rate is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mop">MOP</label>
+                                        <input type="number" class="form-control" id="mop" formControlName="mop" placeholder="Enter MOP">
+                                        <div *ngIf="itemMasterForm.get('mop')?.invalid && itemMasterForm.get('mop')?.touched" class="text-danger">
+                                            MOP is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mrp">MRP</label>
+                                        <input type="number" class="form-control" id="mrp" formControlName="mrp" placeholder="Enter MRP">
+                                        <div *ngIf="itemMasterForm.get('mrp')?.invalid && itemMasterForm.get('mrp')?.touched" class="text-danger">
+                                            MRP is required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="purchaseDiscountPercent">Purchase Discount %</label>
+                                        <input type="number" class="form-control" id="purchaseDiscountPercent" formControlName="purchaseDiscountPercent" placeholder="Enter Purchase Discount %">
+                                        <div *ngIf="itemMasterForm.get('purchaseDiscountPercent')?.invalid && itemMasterForm.get('purchaseDiscountPercent')?.touched" class="text-danger">
+                                            Purchase Discount % is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="purchaseDiscountPrice">Purchase Discount Price</label>
+                                        <input type="number" class="form-control" id="purchaseDiscountPrice" formControlName="purchaseDiscountPrice" placeholder="Enter Purchase Discount Price">
+                                        <div *ngIf="itemMasterForm.get('purchaseDiscountPrice')?.invalid && itemMasterForm.get('purchaseDiscountPrice')?.touched" class="text-danger">
+                                            Purchase Discount Price is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="salesDiscountPercent">Sales Discount %</label>
+                                        <input type="number" class="form-control" id="salesDiscountPercent" formControlName="salesDiscountPercent" placeholder="Enter Sales Discount %">
+                                        <div *ngIf="itemMasterForm.get('salesDiscountPercent')?.invalid && itemMasterForm.get('salesDiscountPercent')?.touched" class="text-danger">
+                                            Sales Discount % is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="salesDiscountAmount">Sales Discount Amount</label>
+                                        <input type="number" class="form-control" id="salesDiscountAmount" formControlName="salesDiscountAmount" placeholder="Enter Sales Discount Amount">
+                                        <div *ngIf="itemMasterForm.get('salesDiscountAmount')?.invalid && itemMasterForm.get('salesDiscountAmount')?.touched" class="text-danger">
+                                            Sales Discount Amount is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="category">Category</label>
+                                        <select class="form-control" id="category" formControlName="category">
+                                            <option value="" disabled>Select Category</option>
+                                            <!-- Add your category options here -->
+                                        </select>
+                                        <div *ngIf="itemMasterForm.get('category')?.invalid && itemMasterForm.get('category')?.touched" class="text-danger">
+                                            Category is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="brand">Brand</label>
+                                        <select class="form-control" id="brand" formControlName="brand">
+                                            <option value="" disabled>Select Brand</option>
+                                            <!-- Add your brand options here -->
+                                        </select>
+                                        <div *ngIf="itemMasterForm.get('brand')?.invalid && itemMasterForm.get('brand')?.touched" class="text-danger">
+                                            Brand is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="supplier">Supplier</label>
+                                        <select class="form-control" id="supplier" formControlName="supplier">
+                                            <option value="" disabled>Select Supplier</option>
+                                            <!-- Add your supplier options here -->
+                                        </select>
+                                        <div *ngIf="itemMasterForm.get('supplier')?.invalid && itemMasterForm.get('supplier')?.touched" class="text-danger">
+                                            Supplier is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="specialDiscountFrom">Special Discount From</label>
+                                        <input type="date" class="form-control" id="specialDiscountFrom" formControlName="specialDiscountFrom">
+                                        <div *ngIf="itemMasterForm.get('specialDiscountFrom')?.invalid && itemMasterForm.get('specialDiscountFrom')?.touched" class="text-danger">
+                                            Special Discount From date is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="specialDiscountTo">Special Discount To</label>
+                                        <input type="date" class="form-control" id="specialDiscountTo" formControlName="specialDiscountTo">
+                                        <div *ngIf="itemMasterForm.get('specialDiscountTo')?.invalid && itemMasterForm.get('specialDiscountTo')?.touched" class="text-danger">
+                                            Special Discount To date is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="specialDiscountPercent">Special Discount %</label>
+                                        <input type="number" class="form-control" id="specialDiscountPercent" formControlName="specialDiscountPercent" placeholder="Enter Special Discount %">
+                                        <div *ngIf="itemMasterForm.get('specialDiscountPercent')?.invalid && itemMasterForm.get('specialDiscountPercent')?.touched" class="text-danger">
+                                            Special Discount % is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="specialDiscountAmount">Special Discount Amount</label>
+                                        <input type="number" class="form-control" id="specialDiscountAmount" formControlName="specialDiscountAmount" placeholder="Enter Special Discount Amount">
+                                        <div *ngIf="itemMasterForm.get('specialDiscountAmount')?.invalid && itemMasterForm.get('specialDiscountAmount')?.touched" class="text-danger">
+                                            Special Discount Amount is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="incentivePercent">Incentive %</label>
+                                        <input type="number" class="form-control" id="incentivePercent" formControlName="incentivePercent" placeholder="Enter Incentive %">
+                                        <div *ngIf="itemMasterForm.get('incentivePercent')?.invalid && itemMasterForm.get('incentivePercent')?.touched" class="text-danger">
+                                            Incentive % is required.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="incentiveAmount">Incentive Amount</label>
+                                        <input type="number" class="form-control" id="incentiveAmount" formControlName="incentiveAmount" placeholder="Enter Incentive Amount">
+                                        <div *ngIf="itemMasterForm.get('incentiveAmount')?.invalid && itemMasterForm.get('incentiveAmount')?.touched" class="text-danger">
+                                            Incentive Amount is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" (click)="next($event)">Next</button>
+                        </div>
+
+                        <!-- Tax Details -->
+                        <div id="test-l-2" class="content">
+                            <div class="form-group">
+                                <label for="taxName">Tax Name</label>
+                                <input type="text" class="form-control" id="taxName" formControlName="taxName" placeholder="Enter Tax Name">
+                                <div *ngIf="itemMasterForm.get('taxName')?.invalid && itemMasterForm.get('taxName')?.touched" class="text-danger">
+                                    Tax Name is required.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="taxPercent">Tax %</label>
+                                <input type="number" class="form-control" id="taxPercent" formControlName="taxPercent" placeholder="Enter Tax %">
+                                <div *ngIf="itemMasterForm.get('taxPercent')?.invalid && itemMasterForm.get('taxPercent')?.touched" class="text-danger">
+                                    Tax % is required.
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

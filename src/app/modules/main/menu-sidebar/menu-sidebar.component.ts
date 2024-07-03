@@ -38,11 +38,32 @@ export const MENU = [
         iconClasses: 'fas fa-tachometer-alt',
         path: ['/']
     },
-    // {
-    //     name: 'Blank',
-    //     iconClasses: 'fas fa-file',
-    //     path: ['/blank']
-    // },
+    {
+        name: 'Book Keeping',
+        iconClasses: 'fas fa-file',
+        children:[
+            {
+                name: 'Payment',
+                iconClasses: 'far fa-address-book',
+                path: ['book-keeping/payment-book']
+            },
+            {
+                name: 'Receipt',
+                iconClasses: 'far fa-address-book',
+                path: ['book-keeping/receipt-book']
+            },
+            {
+                name: 'Day Book',
+                iconClasses: 'far fa-address-book',
+                path: ['book-keeping/day-book']
+            },
+            {
+                name: 'Ledger',
+                iconClasses: 'far fa-address-book',
+                path: ['book-keeping/ledger']
+            },
+        ]
+    },
     {
         name: 'Masters',
         iconClasses: 'fas fa-folder',
@@ -101,17 +122,17 @@ export const MENU = [
                     {
                         name: 'Item Master',
                         iconClasses: 'fas fa-file',
-                        path: ['/itemMaster']
+                        path: ['/product-master/item']
                     },
                     {
                         name: 'Brand Master',
                         iconClasses: 'fas fa-file',
-                        path: ['/brandMaster']
+                        path: ['/product-master/brand']
                     },
                     {
                         name: 'Category Master',
                         iconClasses: 'fas fa-file',
-                        path: ['/categoryMaster']
+                        path: ['/product-master/category']
                     },
                     {
                         name: 'Correction',

@@ -43,6 +43,15 @@ import { NewAccountComponent } from './pages/masters/account-master/new-account/
 import { CompanySelectComponent } from './modules/company-select/company-select.component';
 import { SubGroupsComponent } from './pages/masters/account-master/sub-groups/sub-groups.component';
 import { AccountGroupingComponent } from './pages/masters/account-master/account-grouping/account-grouping.component';
+import { ItemMasterComponent } from '@pages/masters/product-master/item-master/item-master.component';
+import { NewItemComponent } from './pages/masters/product-master/item-master/new-item/new-item.component';
+import { BrandMasterComponent } from './pages/masters/product-master/brand-master/brand-master.component';
+import { CategoryMasterComponent } from './pages/masters/product-master/category-master/category-master.component';
+import { ReceiptEntryComponent } from './pages/receipt/receipt-entry/receipt-entry.component';
+import { ReceiptBookComponent } from './pages/receipt/receipt-book/receipt-book.component';
+import { PaymentEntryComponent } from './pages/payment/payment-entry/payment-entry.component';
+import { PaymentBookComponent } from './pages/payment/payment-book/payment-book.component';
+
 
 
 registerLocaleData(localeEn, 'en-EN');
@@ -74,7 +83,15 @@ registerLocaleData(localeEn, 'en-EN');
         NewAccountComponent,
         CompanySelectComponent,
         SubGroupsComponent,
-        AccountGroupingComponent
+        AccountGroupingComponent,
+        ItemMasterComponent,
+        NewItemComponent,
+        BrandMasterComponent,
+        CategoryMasterComponent,
+        ReceiptEntryComponent,
+        ReceiptBookComponent,
+        PaymentEntryComponent,
+        PaymentBookComponent
     ],
     imports: [
         ProfabricComponentsModule,
