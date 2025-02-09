@@ -24,6 +24,8 @@ import { ReceiptBookComponent } from '@pages/receipt/receipt-book/receipt-book.c
 import { ReceiptEntryComponent } from '@pages/receipt/receipt-entry/receipt-entry.component';
 import { PaymentBookComponent } from '@pages/payment/payment-book/payment-book.component';
 import { PaymentEntryComponent } from '@pages/payment/payment-entry/payment-entry.component';
+import { NewGroupComponent } from '@pages/masters/account-master/sub-groups/new-group/new-group.component';
+import { NewSubgroupComponent } from '@pages/masters/account-master/sub-groups/new-subgroup/new-subgroup.component';
 
 const routes: Routes = [
     {
@@ -53,6 +55,10 @@ const routes: Routes = [
                             {
                                 path: 'receipt-entry',
                                 component: ReceiptEntryComponent
+                            },
+                            {
+                                path: 'receipt-entry/:id',
+                                component: ReceiptEntryComponent
                             }
                         ]
                     },
@@ -65,6 +71,10 @@ const routes: Routes = [
                             },
                             {
                                 path: 'payment-entry',
+                                component: PaymentEntryComponent
+                            },
+                            {
+                                path: 'payment-entry/:id',
                                 component: PaymentEntryComponent
                             }
                         ]
@@ -84,8 +94,33 @@ const routes: Routes = [
                         component: NewAccountComponent
                     },
                     {
+                        path: 'edit-account/:id',
+                        component: NewAccountComponent
+                    },
+                    {
                         path: 'sub-groups',
-                        component: SubGroupsComponent
+                        children: [
+                            {
+                                path: '',
+                                component: SubGroupsComponent
+                            },
+                            {
+                                path: 'new-group',
+                                component: NewGroupComponent
+                            },
+                            {
+                                path: 'edit-group/:id',
+                                component: NewGroupComponent
+                            },
+                            {
+                                path: 'new-sub-group',
+                                component: NewSubgroupComponent
+                            },
+                            {
+                                path: 'edit-sub-group/:id',
+                                component: NewSubgroupComponent
+                            }
+                        ]
                     },
                     {
                         path: 'account-grouping',

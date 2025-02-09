@@ -1,70 +1,101 @@
 <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Payments</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
-            <li class="breadcrumb-item active">Payments</li>
-          </ol>
-        </div>
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Payments</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
+          <li class="breadcrumb-item active">Payments</li>
+        </ol>
       </div>
     </div>
-  </section>
-  
-  <section class="content">
-    <div class="container-fluid">
-      <div class="col-md-12">
-        <div class="card card-outline card-primary">
-          <div class="card-header">
-            <div class="row">
-              <div class="col-md-9">
-                <h3>Payment List</h3>
-              </div>
-              <div class="col-md-3">
-                <button class="btn btn-block btn-primary" (click)="navigateTo('/book-keeping/payment-book/payment-entry')">New</button>
-              </div>
+  </div>
+</section>
+<section class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card card-outline card-primary">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-9"><h3>Payment List</h3></div>
+            <div class="col-md-3">
+              <button class="btn btn-secondary right" (click)="toggleFilter()">
+                <i class="fas" [ngClass]="{ 'fa-chevron-down': !isFilterVisible, 'fa-chevron-up': isFilterVisible }"></i>
+                Filter
+              </button>
             </div>
           </div>
-          <div class="card-body">
-            <table datatable [dtOptions]="dtOptions" class="row-border hover">
-              <thead>
-                <tr>
-                  <th>Payment No</th>
-                  <th>Account</th>
-                  <th>Payment Type</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let payment of payments">
-                  <td>{{ payment.paymentNo }}</td>
-                  <td>{{ payment.accountName }}</td>
-                  <td>{{ payment.paymentType }}</td>
-                  <td>{{ payment.amount }}</td>
-                  <td class="project-actions">
-                    <a class="btn btn-primary btn-sm" href="#">
-                      <i class="fas fa-eye"></i>
-                      View
-                    </a>&nbsp;
-                    <a class="btn btn-info btn-sm" href="#">
-                      <i class="fas fa-pencil-alt"></i>
-                      Edit
-                    </a>&nbsp;
-                    <a class="btn btn-danger btn-sm" href="#">
-                      <i class="fas fa-trash"></i>
-                      Delete
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        </div>
+
+        <!-- 🚀 Collapsible Filter Section -->
+        <div class="card-body" [@filterAnimation]="isFilterVisible ? 'open' : 'closed'">
+          <form [formGroup]="filterForm" (ngSubmit)="getFilteredPayments()">
+            <div class="row">
+              <div class="col-md-4">
+                <label for="date_from">Date From</label>
+                <input type="date" id="date_from" class="form-control" formControlName="date_from">
+              </div>
+              <div class="col-md-4">
+                <label for="date_to">Date To</label>
+                <input type="date" id="date_to" class="form-control" formControlName="date_to">
+              </div>
+              <div class="col-md-4">
+                <label for="payment_type">Payment Type</label>
+                <select id="payment_type" class="form-control" formControlName="payment_type">
+                  <option value="">All</option>
+                  <option value="cash">Cash</option>
+                  <option value="bank">Bank</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12 text-right">
+                <button type="submit" class="btn btn-primary">Apply Filter</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- 🚀 Payments Table -->
+        <div class="card-body">
+          <table datatable [dtOptions]="dtOptions" class="row-border hover">
+            <thead>
+              <tr>
+                <th>Payment No</th>
+                <th>Account</th>
+                <th>Payment Type</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let payment of (payments$ | async)">
+                <td>{{ payment.transaction_no }}</td>
+                <td>{{ payment.account?.name || 'Nil'}}</td>
+                <td>{{ payment.payment_type }}</td>
+                <td>{{ payment.date | date:'dd-MMM-yyyy' }}</td>
+                <td>{{ payment.amount }}</td>
+                <td class="project-actions">
+                  <button class="btn btn-info btn-sm" (click)="editPayment(payment)">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                  </button>&nbsp;
+                  <button class="btn btn-danger btn-sm" (click)="deletePayment(payment.id)">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-  </section>
-  
+
+    <!-- 🚀 Floating "New Payment" Button in Bottom Right -->
+    <button class="floating-add-button" (click)="navigateTo('/book-keeping/payment-book/payment-entry')">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+</section>

@@ -7,22 +7,13 @@
         <form [formGroup]="companySelectForm" (ngSubmit)="onSubmit()">
             <div class="input-group mb-3">
                 <select formControlName="company" class="form-control">
-                    <option value="default" disabled selected>Select Company</option>
-                    <option value="1">Company A</option>
-                    <option value="2">Company B</option>
-                    <option value="3">Company C</option>
-                </select>
-            </div>
-            <div class="input-group mb-3">
-                <select formControlName="financialYear" class="form-control" >
-                    <option value="default" disabled selected>Select Financial Year</option>
-                    <option value="2022-2023">2022-2023</option>
-                    <option value="2023-2024">2023-2024</option>
-                    <option value="2024-2025">2024-2025</option>
+                    <option value=""  selected>Select Company</option>
+                    <option *ngFor="let company of (companies$ | async)" [value]="company.id">
+                        {{ company.name }}
+                    </option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Submit</button>
         </form>
     </div>
-    <!-- /.login-card-body -->
 </div>

@@ -1,96 +1,84 @@
 <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Payment</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
-            <li class="breadcrumb-item active">New Payment</li>
-          </ol>
-        </div>
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>{{ isEditMode ? 'Edit Payment' : 'New Payment' }}</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
+          <li class="breadcrumb-item active">{{ isEditMode ? 'Edit Payment' : 'New Payment' }}</li>
+        </ol>
       </div>
     </div>
-  </section>
-  
-  <section class="content">
-    <div class="container-fluid">
-      <div class="col-md-12">
-        <div class="card card-outline card-primary">
-          <div class="card-header">
-            <h3 class="card-title">Payment Details</h3>
+  </div>
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card card-outline card-primary">
+        <div class="card-header">
+          <h3 class="card-title">{{ isEditMode ? 'Edit Payment Details' : 'Payment Details' }}</h3>
+        </div>
+        <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="transaction_no">Transaction No</label>
+                  <input type="text" id="transaction_no" formControlName="transaction_no" class="form-control" disabled>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label>Payment Type</label>
+                  <div>
+                    <input type="radio" id="cash" value="cash" formControlName="payment_type" (change)="onPaymentTypeChange()">
+                    <label for="cash">Cash</label>
+                    <input type="radio" id="bank" value="bank" formControlName="payment_type" (change)="onPaymentTypeChange()">
+                    <label for="bank">Bank</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="date">Date</label>
+                  <input type="date" id="date" formControlName="date" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="bank_name">Bank Name</label>
+              <input id="bank_name" formControlName="bank_name" class="form-control" [disabled]="isCash">
+            </div>
+            <div class="form-group">
+              <label for="account_id">Account Name</label>
+              <select id="account_id" formControlName="account_id" class="form-control">
+                <option *ngFor="let account of (accounts$ | async)" [value]="account.id">
+                  {{ account.name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="particulars">Particulars</label>
+              <input type="text" id="particulars" formControlName="particulars" class="form-control">
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="amount">Amount</label>
+                  <input type="number" id="amount" formControlName="amount" class="form-control">
+                </div>
+              </div>
+            </div>
           </div>
-          <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <label for="paymentNo">Payment No</label>
-                    <input type="text" id="paymentNo" formControlName="paymentNo" class="form-control" disabled>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <label>Payment Type</label>
-                    <div>
-                      <input type="radio" id="cash" value="Cash" formControlName="paymentType" (change)="onPaymentTypeChange()">
-                      <label for="cash">Cash</label>
-                      <input type="radio" id="bank" value="Bank" formControlName="paymentType" (change)="onPaymentTypeChange()">
-                      <label for="bank">Bank</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <label for="date">Date</label>
-                    <input type="date" id="date" formControlName="date" class="form-control" [value]="todayDate">
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="bankName">Bank Name</label>
-                <select id="bankName" formControlName="bankName" class="form-control" [disabled]="isCash">
-                  <!-- Options for bank names -->
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="accountName">Account Name</label>
-                <select id="accountName" formControlName="accountName" class="form-control">
-                  <!-- Options for account names -->
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="particulars">Particulars</label>
-                <input type="text" id="particulars" formControlName="particulars" class="form-control">
-              </div>
-              <div class="row">
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="number" id="amount" formControlName="amount" class="form-control">
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <label for="bankCommission">Bank Commission</label>
-                    <input type="number" id="bankCommission" formControlName="bankCommission" class="form-control" [disabled]="isCash">
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <label for="purchaseCommission">Purchase Commission</label>
-                    <input type="number" id="purchaseCommission" formControlName="purchaseCommission" class="form-control" [disabled]="isCash">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
-        </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Submit' }}</button>
+          </div>
+        </form>
       </div>
     </div>
-  </section>
-  
+  </div>
+</section>

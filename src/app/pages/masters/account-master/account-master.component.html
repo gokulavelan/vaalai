@@ -47,32 +47,32 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let account of accounts">
+            <tr *ngFor="let account of (accounts$ | async)">
               <td>{{ account.name }}</td>
               <td>{{ account.city }}</td>
-              <td>{{ account.subGroup }}</td>
+              <td>{{ account.sub_group?.name || 'Not Available' }}</td>
               <!-- <td>
                 <button class="btn btn-sm btn-primary" (click)="editAccount(account)">
                   <i class="fa fa-edit"></i> 
                 </button>
               </td> -->
               <td class="project-actions">
-                <a class="btn btn-primary btn-sm" href="#">
-                  <i class="fas fa-eye">
-                  </i>
+                <!-- <a class="btn btn-primary btn-sm" href="#">
+                  <i class="fas fa-eye"></i>
                   View
-                  </a>&nbsp;
-                  <a class="btn btn-info btn-sm" href="#">
+                </a> -->
+                  &nbsp;
+                <a class="btn btn-info btn-sm"  (click)="editAccount(account)">
                   <i class="fas fa-pencil-alt">
                   </i>
                   Edit
-                  </a>
+                </a>
                   &nbsp;
-                  <a class="btn btn-danger btn-sm" href="#">
+                <a class="btn btn-danger btn-sm" (click)="deleteAccount(account.id)">
                   <i class="fas fa-trash">
                   </i>
                   Delete
-                  </a>
+                </a>
               </td>
             </tr>
           </tbody>

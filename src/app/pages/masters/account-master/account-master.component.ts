@@ -1,5 +1,8 @@
+import { AppState } from '@/store/state';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppService } from '@services/app.service';
 
 @Component({
   selector: 'app-account-master',
@@ -7,34 +10,33 @@ import { Router } from '@angular/router';
   styleUrl: './account-master.component.scss'
 })
 export class AccountMasterComponent {
- dtOptions: DataTables.Settings = {};
-  accounts: any[] = []; // Replace any[] with your actual account interface/type
+  accounts$ = this.store.select(state => state.account.accounts);
+  dtOptions: DataTables.Settings = {};
+  //accounts: any[] = []; // Replace any[] with your actual account interface/type
 
   constructor(
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>,
+    private appService: AppService
   ) { }
 
   ngOnInit(): void {
     this.dtOptions = {
       pagingType: 'full_numbers'
     };
-
-    // Replace this with your actual data retrieval logic
-    this.accounts = [
-      { name: 'Account 1', city: 'City 1',subGroup: 'Current A/C' },
-      { name: 'Account 2', city: 'City 2', subGroup: 'Income A/C' },
-      // Add more accounts as needed
-    ];
+    this.appService.getAccountsForCompany();
   }
 
-  editAccount(account: any) {
-    // Handle edit action
-    console.log('Editing account:', account);
+  async editAccount(account: any) {
+    this.appService.getAccountById(account.id);
+    this.router.navigate([`/account-master/edit-account/${account.id}`]);
   }
 
-  deleteAccount(account: any) {
-    // Handle delete action
-    console.log('Deleting account:', account);
+  async deleteAccount(accountId: number) {
+    if (confirm('Are you sure you want to delete this sub-group?')) {
+      this.appService.deleteAccount(accountId);
+      this.appService.getAccountsForCompany(); // Refresh sub-group list
+    }
   }
 
   public navigateTo(str: string){

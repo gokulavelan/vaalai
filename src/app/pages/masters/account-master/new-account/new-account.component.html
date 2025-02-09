@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>New Account</h1>
+                <h1>{{header}}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
-                    <li class="breadcrumb-item active">New Account</li>
+                    <li class="breadcrumb-item active">{{header}}</li>
                 </ol>
             </div>
         </div>
@@ -42,35 +42,37 @@
                     </div>
                 </div>
                 <div class="bs-stepper-content">
-                    <form (ngSubmit)="onSubmit()">
+                    <form  [formGroup]="accountForm" (ngSubmit)="onSubmit()">
                         <div id="test-l-1" class="content">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                                        <input type="text" class="form-control" formControlName="name" id="name" placeholder="Enter Name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="subGroup">Sub Group</label>
-                                        <select class="form-control" id="subGroup">
+                                        <label for="sub_group_id">Sub Group</label>
+                                        <select class="form-control" id="sub_group_id" formControlName="sub_group_id">
                                             <option>Select Sub Group</option>
-                                            <!-- Add your sub group options here -->
+                                            <option *ngFor="let subGroup of (subGroups$ | async)" [value]="subGroup.id">
+                                                {{ subGroup.name }}
+                                              </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="openingBalance">Opening Balance</label>
-                                        <input type="number" class="form-control" id="openingBalance" placeholder="Enter Opening Balance">
+                                        <label for="opening_balance">Opening Balance</label>
+                                        <input type="number" class="form-control" id="opening_balance" formControlName="opening_balance" placeholder="Enter Opening Balance">
                                     </div>
                                     <div class="form-group">
                                         <label for="radio">Transaction Type</label><br>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="transactionType" id="credit" value="credit">
+                                            <input class="form-check-input" type="radio" name="transaction_type" formControlName="transaction_type" id="credit" value="credit">
                                             <label class="form-check-label" for="credit">Credit</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="transactionType" id="debit" value="debit">
+                                            <input class="form-check-input" type="radio" name="transaction_type" formControlName="transaction_type" id="debit" value="debit">
                                             <label class="form-check-label" for="debit">Debit</label>
                                         </div>
                                     </div>
@@ -80,17 +82,17 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="gstn">GSTN No</label>
-                                        <input type="text" class="form-control" id="gstn" placeholder="Enter GSTN No">
+                                        <input type="text" class="form-control" id="gstn" formControlName="gstn" placeholder="Enter GSTN No">
                                     </div>
                                     <div class="form-group">
                                         <label for="fssi">FSSI No</label>
-                                        <input type="text" class="form-control" id="fssi" placeholder="Enter FSSI No">
+                                        <input type="text" class="form-control" id="fssi" formControlName="fssi" placeholder="Enter FSSI No">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="pan">PAN No</label>
-                                        <input type="text" class="form-control" id="pan" placeholder="Enter PAN No">
+                                        <input type="text" class="form-control" id="pan"  formControlName="pan" placeholder="Enter PAN No">
                                     </div>
                                 </div>
                             </div>
@@ -102,29 +104,29 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="address1">Address 1</label>
-                                        <input type="text" class="form-control" id="address1" placeholder="Enter Address 1">
+                                        <input type="text" class="form-control" id="address1" formControlName="address1" placeholder="Enter Address 1">
                                     </div>
                                     <div class="form-group">
                                         <label for="address2">Address 2</label>
-                                        <input type="text" class="form-control" id="address2" placeholder="Enter Address 2">
+                                        <input type="text" class="form-control" id="address2" formControlName="address2" placeholder="Enter Address 2">
                                     </div>
                                     <div class="form-group">
                                         <label for="address3">Address 3</label>
-                                        <input type="text" class="form-control" id="address3" placeholder="Enter Address 3">
+                                        <input type="text" class="form-control" id="address3" formControlName="address3" placeholder="Enter Address 3">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="area">Area</label>
-                                        <input type="text" class="form-control" id="area" placeholder="Enter Area">
+                                        <input type="text" class="form-control" id="area" formControlName="area" placeholder="Enter Area">
                                     </div>
                                     <div class="form-group">
                                         <label for="city">City</label>
-                                        <input type="text" class="form-control" id="city" placeholder="Enter City">
+                                        <input type="text" class="form-control" id="city" formControlName="city" placeholder="Enter City">
                                     </div>
                                     <div class="form-group">
-                                        <label for="pinc">Pin Code</label>
-                                        <input type="text" class="form-control" id="pinc" placeholder="Enter Pin Code">
+                                        <label for="pincode">Pin Code</label>
+                                        <input type="text" class="form-control" id="pincode" formControlName="pincode" placeholder="Enter Pin Code">
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +134,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="state">State</label>
-                                        <input type="text" class="form-control" id="state" placeholder="Enter State">
+                                        <input type="text" class="form-control" id="state" formControlName="state" placeholder="Enter State">
                                     </div>
                                 </div>
                             </div>
@@ -140,22 +142,22 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="off_phone">Office Phone</label>
-                                        <input type="text" class="form-control" id="off_phone" placeholder="Enter Office Phone">
+                                        <label for="office_phone">Office Phone</label>
+                                        <input type="text" class="form-control" id="office_phone" formControlName="office_phone" placeholder="Enter Office Phone">
                                     </div>
                                     <div class="form-group">
-                                        <label for="fac_phone">Factory Phone</label>
-                                        <input type="text" class="form-control" id="fac_phone" placeholder="Enter Factory Phone">
+                                        <label for="factory_phone">Factory Phone</label>
+                                        <input type="text" class="form-control" id="factory_phone" formControlName="factory_phone" placeholder="Enter Factory Phone">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="mobile">Mobile</label>
-                                        <input type="text" class="form-control" id="mobile" placeholder="Enter Mobile">
+                                        <input type="text" class="form-control" id="mobile" formControlName="mobile" placeholder="Enter Mobile">
                                     </div>
                                     <div class="form-group">
-                                        <label for="reci_phone">Reci Phone</label>
-                                        <input type="text" class="form-control" id="reci_phone" placeholder="Enter Recidence Phone">
+                                        <label for="residence_phone">Reci Phone</label>
+                                        <input type="text" class="form-control" id="residence_phone" formControlName="residence_phone" placeholder="Enter Recidence Phone">
                                     </div>
                                 </div>
                             </div>
@@ -163,17 +165,17 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="contact_person">Contact Person</label>
-                                        <input type="text" class="form-control" id="contact_person" placeholder="Enter Contact Person">
+                                        <input type="text" class="form-control" id="contact_person" formControlName="contact_person" placeholder="Enter Contact Person">
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email Id</label>
-                                        <input type="text" class="form-control" id="email" placeholder="Enter Email Id">
+                                        <input type="text" class="form-control" id="email" formControlName="email" placeholder="Enter Email Id">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="website">Website</label>
-                                        <input type="text" class="form-control" id="website" placeholder="Enter Website">
+                                        <input type="text" class="form-control" id="website" formControlName="website" placeholder="Enter Website">
                                     </div>
                                 </div>
                             </div>
@@ -188,30 +190,30 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="bankName">Bank Name</label>
-                                        <input type="text" class="form-control" id="bankName" placeholder="Enter Bank Name">
+                                        <label for="bank_name">Bank Name</label>
+                                        <input type="text" class="form-control" id="bank_name" formControlName="bank_name" placeholder="Enter Bank Name">
                                     </div>
                                     <div class="form-group">
                                         <label for="branch">Branch</label>
-                                        <input type="text" class="form-control" id="branch" placeholder="Enter Branch">
+                                        <input type="text" class="form-control" id="branch" formControlName="branch" placeholder="Enter Branch">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="ifsc">IFSC Code</label>
-                                        <input type="text" class="form-control" id="ifsc" placeholder="Enter IFSC Code">
+                                        <label for="ifsc_code">IFSC Code</label>
+                                        <input type="text" class="form-control" id="ifsc_code" formControlName="ifsc_code" placeholder="Enter IFSC Code">
                                     </div>
                                     <div class="form-group">
-                                        <label for="acNo">A/C No</label>
-                                        <input type="text" class="form-control" id="acNo" placeholder="Enter A/C No">
+                                        <label for="account_number">A/C No</label>
+                                        <input type="text" class="form-control" id="account_number" formControlName="account_number" placeholder="Enter A/C No">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="acType">A/C Type</label>
-                                        <input type="text" class="form-control" id="acType" placeholder="Enter A/C Type">
+                                        <label for="account_type">A/C Type</label>
+                                        <input type="text" class="form-control" id="account_type" formControlName="account_type" placeholder="Enter A/C Type">
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+
+import { AuthInterceptor } from '@services/api.service';
 
 import {AppRoutingModule} from '@/app-routing.module';
 import {AppComponent} from './app.component';
@@ -29,9 +31,13 @@ import {MainMenuComponent} from './pages/main-menu/main-menu.component';
 import {SubMenuComponent} from './pages/main-menu/sub-menu/sub-menu.component';
 import {MenuItemComponent} from './components/menu-item/menu-item.component';
 import {ControlSidebarComponent} from './modules/main/control-sidebar/control-sidebar.component';
+
+
 import {StoreModule} from '@ngrx/store';
 import {authReducer} from './store/auth/reducer';
 import {uiReducer} from './store/ui/reducer';
+import { companyReducer } from './store/company/reducer';
+
 import {ProfabricComponentsModule} from '@profabric/angular-components';
 import {SidebarSearchComponent} from './components/sidebar-search/sidebar-search.component';
 import {NgxGoogleAnalyticsModule} from 'ngx-google-analytics';
@@ -52,9 +58,19 @@ import { ReceiptBookComponent } from './pages/receipt/receipt-book/receipt-book.
 import { PaymentEntryComponent } from './pages/payment/payment-entry/payment-entry.component';
 import { PaymentBookComponent } from './pages/payment/payment-book/payment-book.component';
 
-
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { accountReducer } from './store/account/reducer';
+import { groupReducer, subGroupReducer } from './store/groups/reducer';
+import { NewGroupComponent } from '@pages/masters/account-master/sub-groups/new-group/new-group.component';
+import { NewSubgroupComponent } from '@pages/masters/account-master/sub-groups/new-subgroup/new-subgroup.component';
+import { paymentReducer } from './store/payment/reducer';
+import { receiptReducer } from './store/receipt/reducer';
 
 registerLocaleData(localeEn, 'en-EN');
+
+export function localStorageSyncReducer(reducer: any) {
+    return localStorageSync({ keys: ['company','account'], rehydrate: true })(reducer);
+}
 
 @NgModule({
     declarations: [
@@ -91,13 +107,23 @@ registerLocaleData(localeEn, 'en-EN');
         ReceiptEntryComponent,
         ReceiptBookComponent,
         PaymentEntryComponent,
-        PaymentBookComponent
+        PaymentBookComponent,
+        NewGroupComponent,
+        NewSubgroupComponent
     ],
     imports: [
         ProfabricComponentsModule,
         CommonModule,
         BrowserModule,
-        StoreModule.forRoot({auth: authReducer, ui: uiReducer}),
+        StoreModule.forRoot({auth: authReducer, 
+                             ui: uiReducer,
+                             company: companyReducer,
+                             account: accountReducer,
+                             group: groupReducer,
+                             subGroup: subGroupReducer,
+                             payment: paymentReducer,
+                             receipt: receiptReducer},
+                             { metaReducers: [localStorageSyncReducer] }),
         HttpClientModule,
         AppRoutingModule,
         ReactiveFormsModule,
@@ -110,7 +136,9 @@ registerLocaleData(localeEn, 'en-EN');
         NgxGoogleAnalyticsModule.forRoot(environment.GA_ID),
         DataTablesModule
     ],
-    providers: [],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

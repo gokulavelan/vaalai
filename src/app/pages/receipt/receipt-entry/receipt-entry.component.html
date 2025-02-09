@@ -16,84 +16,69 @@
   
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card card-outline card-primary">
-            <div class="card-header">
-              <h3 class="card-title">New Receipt</h3>
-            </div>
-            <div class="card-body">
-              <form [formGroup]="receiptForm" (ngSubmit)="onSubmit()">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label for="receiptNo">Receipt No</label>
-                      <input type="text" class="form-control" id="receiptNo" formControlName="receiptNo" disabled>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Payment Type</label><br>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" formControlName="paymentType" value="Cash" (change)="onPaymentTypeChange($event)">
-                        <label class="form-check-label" for="cash">Cash</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" formControlName="paymentType" value="Bank" (change)="onPaymentTypeChange($event)">
-                        <label class="form-check-label" for="bank">Bank</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label for="date">Date</label>
-                      <input type="date" class="form-control" id="date" formControlName="date">
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <label for="bankName">Bank Name</label>
-                  <select class="form-control" id="bankName" formControlName="bankName" [disabled]="isCash">
-                    <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="accountName">Account Name</label>
-                  <select class="form-control" id="accountName" formControlName="accountName">
-                    <option *ngFor="let account of accounts" [value]="account">{{ account }}</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="particulars">Particulars</label>
-                  <input type="text" class="form-control" id="particulars" formControlName="particulars">
-                </div>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label for="amount">Amount</label>
-                      <input type="number" class="form-control" id="amount" formControlName="amount">
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label for="cashDiscount">Cash Discount</label>
-                      <input type="number" class="form-control" id="cashDiscount" formControlName="cashDiscount">
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label for="commission">Commission</label>
-                      <input type="number" class="form-control" id="commission" formControlName="commission" [disabled]="isCash">
-                    </div>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary right" [disabled]="receiptForm.invalid">Submit</button>
-              </form>
-            </div>
+      <div class="col-md-12">
+        <div class="card card-outline card-primary">
+          <div class="card-header">
+            <h3 class="card-title">{{ isEditMode ? 'Edit Receipt Details' : 'Receipt Details' }}</h3>
           </div>
+          <form [formGroup]="receiptForm" (ngSubmit)="onSubmit()">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="transaction_no">Transaction No</label>
+                    <input type="text" id="transaction_no" formControlName="transaction_no" class="form-control" disabled>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label>Payment Type</label>
+                    <div>
+                      <input type="radio" id="cash" value="cash" formControlName="payment_type" (change)="onPaymentTypeChange()">
+                      <label for="cash">Cash</label>
+                      <input type="radio" id="bank" value="bank" formControlName="payment_type" (change)="onPaymentTypeChange()">
+                      <label for="bank">Bank</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" formControlName="date" class="form-control">
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label for="bank_name">Bank Name</label>
+                <input id="bank_name" formControlName="bank_name" class="form-control" [disabled]="isCash">
+              </div>
+              <div class="form-group">
+                <label for="account_id">Account Name</label>
+                <select id="account_id" formControlName="account_id" class="form-control">
+                  <option *ngFor="let account of (accounts$ | async)" [value]="account.id">
+                    {{ account.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="particulars">Particulars</label>
+                <input type="text" id="particulars" formControlName="particulars" class="form-control">
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" formControlName="amount" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Submit' }}</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </section>
-  
