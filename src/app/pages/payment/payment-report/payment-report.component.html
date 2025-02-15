@@ -1,0 +1,18 @@
+<button class="btn btn-primary print-button" (click)="printContainer()">Print Report</button>
+<div class="print-container">
+  <pre>
+      {{selectedCompany.name}}
+     
+  Payment Register - For The Period {{ dateRange }}   
+  ---------------------------------------------------------------------------
+  Date     |     TRN.No    | Account Name                       | Amount      
+  ---------------------------------------------------------------------------
+<ng-container *ngFor="let payment of payments">
+{{ (payment.date | date:'dd-MM-yyyy').padEnd(11) }}| {{ payment.transaction_no.padEnd(7) }}| {{ payment.account?.name.padEnd(35) }}| {{ (payment.amount | number:'1.2-2').padStart(12) }}
+{{ ''.padEnd(11) }}| {{ ''.padEnd(14) }}| {{ payment.particulars.padEnd(35) }}|            
+</ng-container>
+  ---------------------------------------------------------------------------
+           |               | Total                              | {{ totalAmount | number:'1.2-2' }}
+  ---------------------------------------------------------------------------
+  </pre>
+</div>

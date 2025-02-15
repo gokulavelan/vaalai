@@ -28,7 +28,6 @@ export class MenuSidebarComponent implements OnInit {
             this.classes = `${BASE_CLASSES} ${state.sidebarSkin}`;
         });
         this.user = this.appService.user;
-        console.log(this.user);
     }
 }
 

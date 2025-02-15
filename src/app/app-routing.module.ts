@@ -26,6 +26,10 @@ import { PaymentBookComponent } from '@pages/payment/payment-book/payment-book.c
 import { PaymentEntryComponent } from '@pages/payment/payment-entry/payment-entry.component';
 import { NewGroupComponent } from '@pages/masters/account-master/sub-groups/new-group/new-group.component';
 import { NewSubgroupComponent } from '@pages/masters/account-master/sub-groups/new-subgroup/new-subgroup.component';
+import { PaymentReportComponent } from '@pages/payment/payment-report/payment-report.component';
+import { ReceiptReportComponent } from '@pages/receipt/receipt-report/receipt-report.component';
+import { DaybookReportComponent } from '@pages/daybook/daybook-report/daybook-report.component';
+import { LedgerReportComponent } from '@pages/ledger/ledger-report/ledger-report.component';
 
 const routes: Routes = [
     {
@@ -59,6 +63,10 @@ const routes: Routes = [
                             {
                                 path: 'receipt-entry/:id',
                                 component: ReceiptEntryComponent
+                            },
+                            {
+                                path: 'receipt-report',
+                                component: ReceiptReportComponent
                             }
                         ]
                     },
@@ -76,8 +84,20 @@ const routes: Routes = [
                             {
                                 path: 'payment-entry/:id',
                                 component: PaymentEntryComponent
+                            },
+                            {
+                                path: 'payment-report',
+                                component: PaymentReportComponent
                             }
                         ]
+                    },
+                    {
+                        path:'day-book',
+                        component: DaybookReportComponent
+                    },
+                    {
+                        path:'ledger',
+                        component: LedgerReportComponent
                     }
                 ]
             },

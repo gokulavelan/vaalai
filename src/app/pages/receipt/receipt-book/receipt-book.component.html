@@ -38,6 +38,7 @@
             <div class="row mt-3">
               <div class="col-md-12 text-right">
                 <button type="submit" class="btn btn-primary">Apply Filter</button>
+                <button type="button" class="btn btn-success ml-2" (click)="navigateToPrint()">Print Receipt Book</button>
               </div>
             </div>
           </form>
@@ -74,11 +75,23 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- 🚀 Showing Entries Info -->
+          <p class="mt-2 text-right">Showing {{ showingFrom }} to {{ showingTo }} of {{ pagination.totalRecords }} entries</p>
+
+          <!-- 🚀 Pagination Controls -->
+          <div class="text-center mt-3">
+            <button class="btn btn-secondary" [disabled]="pagination.currentPage <= 1" (click)="goToPage(pagination.currentPage - 1)">
+              <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <span class="mx-3">Page {{ pagination.currentPage }} of {{ pagination.lastPage }}</span>
+            <button class="btn btn-secondary" [disabled]="pagination.currentPage >= pagination.lastPage" (click)="goToPage(pagination.currentPage + 1)">
+              Next <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- 🚀 Floating "New Receipt" Button in Bottom Right -->
     <button class="floating-add-button" (click)="navigateTo('/book-keeping/receipt-book/receipt-entry')">
       <i class="fas fa-plus"></i>
     </button>

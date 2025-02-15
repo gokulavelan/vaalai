@@ -12,6 +12,11 @@ import { SelectGroup, SelectSubGroup, SetGroups, SetSubGroups } from '@/store/gr
 import { Group } from '@/store/groups/state';
 import { SelectPayment, SetPayments } from '@/store/payment/actions';
 import { SelectReceipt, SetReceipts } from '@/store/receipt/actions';
+import { SetMeta } from '@/store/metaPages/actions';
+import { Payment } from '@/store/payment/state';
+import { Receipt } from '@/store/receipt/state';
+import { SetDayBook } from '@/store/daybook/actions';
+import { SetLedger, SetLedgerMonthly } from '@/store/ledger/actions';
 @Injectable({
     providedIn: 'root'
 })
@@ -71,7 +76,7 @@ export class AppService {
 
             if (userProfile?.response.status === 'success') {
                 this.user = userProfile?.data;
-                console.log(userProfile?.data);
+                // console.log(userProfile?.data);
             } else {
                this.logout();
             }
@@ -357,14 +362,26 @@ export class AppService {
 //#endregion
 
 //#region  Payment
-    async getPaymentsForCompany(filters: { date_from?: string; date_to?: string; payment_type?: string } = {}) {
+    async getPaymentsForCompany(filters: { date_from?: string; date_to?: string; payment_type?: string } = {},page: number) {
         try {
+            
+            const companyState = await firstValueFrom(this.store.select(state => state.company));
+
+            const selectedCompanyId = companyState?.selectedCompany?.id;
+
+            if (!selectedCompanyId) {
+                this.toastr.error('No company selected!');
+                return;
+            }
             const response = await firstValueFrom(
-                this.apiService.getPayments(filters.date_from, filters.date_to, filters.payment_type)
+                this.apiService.getPayments(selectedCompanyId,filters.date_from, filters.date_to, filters.payment_type,page)
             );
 
             if (response?.response?.status === 'success') {
+                console.log(response.data);
+                
                 this.store.dispatch(new SetPayments(response.data));
+                this.store.dispatch(new SetMeta(response.meta));
             } else {
                 this.toastr.error(response.response.message || 'Failed to retrieve payments');
             }
@@ -447,17 +464,57 @@ export class AppService {
             this.toastr.error(error.error?.message || 'Error deleting payment');
         }
     }
+
+    async getPaymentsForPrint(filters: { date_from?: string; date_to?: string; payment_type?: string } = {}): Promise<Payment[]> {
+        try {
+            const companyState = await firstValueFrom(this.store.select(state => state.company));
+
+            const selectedCompanyId = companyState?.selectedCompany?.id;
+
+            if (!selectedCompanyId) {
+                this.toastr.error('No company selected!');
+                return;
+            }
+            const response = await firstValueFrom(
+                this.apiService.getPaymentsForReport(selectedCompanyId,filters.date_from, filters.date_to, filters.payment_type)
+            );
+    
+            if (response?.response?.status === 'success') {
+                console.log('Payments for Print:', response.data);
+                this.toastr.info('Payments loaded successfully for printing');
+                return response.data as Payment[];
+            } else {
+                this.toastr.error(response.response.message || 'Failed to retrieve payments for printing');
+                return [];
+            }
+        } catch (error) {
+            this.toastr.error(error.error?.message || 'Error loading payments for printing');
+            return [];
+        }
+    }
+
 //#endregion
 
 //#region  Receipts
-    async getReceiptsForCompany(filters: { date_from?: string; date_to?: string; payment_type?: string } = {}) {
+    async getReceiptsForCompany(filters: { date_from?: string; date_to?: string; payment_type?: string } = {},page:number) {
         try {
+
+            const companyState = await firstValueFrom(this.store.select(state => state.company));
+
+            const selectedCompanyId = companyState?.selectedCompany?.id;
+
+            if (!selectedCompanyId) {
+                this.toastr.error('No company selected!');
+                return;
+            }
+
             const response = await firstValueFrom(
-                this.apiService.getReceipts(filters.date_from, filters.date_to, filters.payment_type)
+                this.apiService.getReceipts(selectedCompanyId,filters.date_from, filters.date_to, filters.payment_type,page)
             );
 
             if (response?.response?.status === 'success') {
                 this.store.dispatch(new SetReceipts(response.data));
+                this.store.dispatch(new SetMeta(response.meta));
             } else {
                 this.toastr.error(response.response.message || 'Failed to retrieve receipts');
             }
@@ -539,8 +596,95 @@ export class AppService {
             this.toastr.error(error.error?.message || 'Error deleting receipt');
         }
     }
+    async getReceiptsForPrint(filters: { date_from?: string; date_to?: string; receipt_type?: string } = {}): Promise<Receipt[]> {
+        try {
+            const companyState = await firstValueFrom(this.store.select(state => state.company));
+
+            const selectedCompanyId = companyState?.selectedCompany?.id;
+
+            if (!selectedCompanyId) {
+                this.toastr.error('No company selected!');
+                return;
+            }
+            const response = await firstValueFrom(
+                this.apiService.getReceiptsForReport(selectedCompanyId,filters.date_from, filters.date_to, filters.receipt_type)
+            );
+    
+            if (response?.response?.status === 'success') {
+                this.toastr.info('Receipts loaded successfully for printing');
+                return response.data as Receipt[];
+            } else {
+                this.toastr.error(response.response.message || 'Failed to retrieve receipts for printing');
+                return [];
+            }
+        } catch (error) {
+            this.toastr.error(error.error?.message || 'Error loading receipts for printing');
+            return [];
+        }
+    }
 //#endregion
 
+//#region  Day Book
+    async getDayBookForPrint(fromDate: string, toDate: string): Promise<any> {
+        try {
+            const companyState = await firstValueFrom(this.store.select(state => state.company));
+
+            const selectedCompanyId = companyState?.selectedCompany?.id;
+
+            if (!selectedCompanyId) {
+                this.toastr.error('No company selected!');
+                return;
+            }
+            const response = await firstValueFrom(this.apiService.getDayBook(fromDate, toDate, selectedCompanyId));
+        
+            if (response?.response?.status === 'success') {
+                this.store.dispatch(new SetDayBook({ entries: response.data }));
+                this.toastr.info('DayBook data loaded successfully');
+                return response.data;
+            } else {
+                this.toastr.error(response.response.message || 'Failed to retrieve DayBook data');
+                return null;
+            }
+        } catch (error) {
+            this.toastr.error(error.error?.message || 'Error loading DayBook data');
+            return null;
+        }
+    }
+//#endregion
+
+//#region Ledger Book
+async getLedgerBookForPrint(accountId: number, fromDate: string, toDate: string, monthlyClosing: boolean): Promise<any> {
+    try {
+      const companyState = await firstValueFrom(this.store.select(state => state.company));
+      const selectedCompanyId = companyState?.selectedCompany?.id;
+  
+      if (!selectedCompanyId) {
+        this.toastr.error('No company selected!');
+        return;
+      }
+  
+      const response = await firstValueFrom(this.apiService.getLedgerBook(accountId, fromDate, toDate, monthlyClosing));
+  
+      if (response?.response?.status === 'success') {
+        if (monthlyClosing) {
+          this.store.dispatch(new SetLedger({ entries: response.data }));  // For monthly closing
+        } else {
+          this.store.dispatch(new SetLedgerMonthly( response.data ));  // For detailed ledger
+        }
+        this.toastr.info('Ledger data loaded successfully');
+        return response.data;
+      } else {
+        this.toastr.error(response.response.message || 'Failed to retrieve Ledger data');
+        return null;
+      }
+    } catch (error) {
+      this.toastr.error(error.error?.message || 'Error loading Ledger data');
+      return null;
+    }
+  }
+  
+  //#endregion
+  
 
 logout() {
         localStorage.removeItem('token');

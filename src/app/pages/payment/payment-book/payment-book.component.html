@@ -20,8 +20,8 @@
         <div class="card-header">
           <div class="row">
             <div class="col-md-9"><h3>Payment List</h3></div>
-            <div class="col-md-3">
-              <button class="btn btn-secondary right" (click)="toggleFilter()">
+            <div class="col-md-3 text-right">
+              <button class="btn btn-secondary" (click)="toggleFilter()">
                 <i class="fas" [ngClass]="{ 'fa-chevron-down': !isFilterVisible, 'fa-chevron-up': isFilterVisible }"></i>
                 Filter
               </button>
@@ -29,7 +29,7 @@
           </div>
         </div>
 
-        <!-- 🚀 Collapsible Filter Section -->
+        <!-- 🚀 Filter Section -->
         <div class="card-body" [@filterAnimation]="isFilterVisible ? 'open' : 'closed'">
           <form [formGroup]="filterForm" (ngSubmit)="getFilteredPayments()">
             <div class="row">
@@ -53,6 +53,7 @@
             <div class="row mt-3">
               <div class="col-md-12 text-right">
                 <button type="submit" class="btn btn-primary">Apply Filter</button>
+                <button type="button" class="btn btn-success ml-2" (click)="navigateToPrint()">Print Payment Book</button>
               </div>
             </div>
           </form>
@@ -74,14 +75,14 @@
             <tbody>
               <tr *ngFor="let payment of (payments$ | async)">
                 <td>{{ payment.transaction_no }}</td>
-                <td>{{ payment.account?.name || 'Nil'}}</td>
+                <td>{{ payment.account?.name || 'Nil' }}</td>
                 <td>{{ payment.payment_type }}</td>
                 <td>{{ payment.date | date:'dd-MMM-yyyy' }}</td>
                 <td>{{ payment.amount }}</td>
-                <td class="project-actions">
+                <td>
                   <button class="btn btn-info btn-sm" (click)="editPayment(payment)">
                     <i class="fas fa-pencil-alt"></i> Edit
-                  </button>&nbsp;
+                  </button>
                   <button class="btn btn-danger btn-sm" (click)="deletePayment(payment.id)">
                     <i class="fas fa-trash"></i> Delete
                   </button>
@@ -89,12 +90,25 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- 🚀 Showing Entries Info -->
+          <p class="mt-2 text-right">Showing {{ showingFrom }} to {{ showingTo }} of {{ pagination.totalRecords }} entries</p>
+
+          <!-- 🚀 Custom Pagination -->
+          <div class="text-center mt-3">
+            <button class="btn btn-secondary" [disabled]="pagination.currentPage <= 1" (click)="goToPage(pagination.currentPage - 1)">
+              <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <span class="mx-3">Page {{ pagination.currentPage }} of {{ pagination.lastPage }}</span>
+            <button class="btn btn-secondary" [disabled]="pagination.currentPage >= pagination.lastPage" (click)="goToPage(pagination.currentPage + 1)">
+              Next <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- 🚀 Floating "New Payment" Button in Bottom Right -->
-    <button class="floating-add-button" (click)="navigateTo('/book-keeping/payment-book/payment-entry')">
+     <!-- 🚀 Floating "New Payment" Button in Bottom Right -->
+     <button class="floating-add-button" (click)="navigateTo('/book-keeping/payment-book/payment-entry')">
       <i class="fas fa-plus"></i>
     </button>
   </div>

@@ -1,0 +1,20 @@
+.print-container {
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre;
+    font-size: 14px;
+  }
+  
+  .filter-section {
+    margin-bottom: 20px;
+  }
+  
+  @media print {
+    .filter-section, button {
+      display: none;
+    }
+  }
+  ng-container {
+    display: contents;
+    margin: 0;
+    padding: 0;
+  }

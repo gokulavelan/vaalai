@@ -22,7 +22,12 @@ export class ReceiptBookComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   receipts$ = this.store.select(state => state.receipt.transactions);
   filterForm: FormGroup;
-  isFilterVisible = false; // 🚀 Filter hidden initially
+  isFilterVisible = false;
+
+  // 🚀 Pagination State
+  pagination = { currentPage: 1, lastPage: 1, totalRecords: 0, pageSize: 10 };
+  showingFrom = 0;
+  showingTo = 0;
 
   constructor(
     private router: Router,
@@ -32,7 +37,7 @@ export class ReceiptBookComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.dtOptions = { pagingType: 'full_numbers', pageLength: 10, processing: true };
+    this.dtOptions = { paging: false, info: false, searching: false };
 
     // Initialize filter form
     this.filterForm = this.fb.group({
@@ -41,22 +46,48 @@ export class ReceiptBookComponent implements OnInit {
       payment_type: ['']
     });
 
-    // Fetch initial receipts
-    await this.getFilteredReceipts();
+    await this.fetchReceipts(1);
   }
 
-  // 🚀 Toggle Filter Section
+  // 🚀 Fetch receipts with pagination
+  async fetchReceipts(page: number): Promise<void> {
+    console.log('🔄 Fetching receipts for page:', page);
+
+    const filters = this.filterForm.value;
+    await this.appService.getReceiptsForCompany(filters, page);
+
+    // ✅ Get updated pagination metadata
+    const meta = await firstValueFrom(this.store.select(state => state.meta));
+    if (meta) {
+      this.pagination.currentPage = meta.currentPage;
+      this.pagination.lastPage = meta.lastPage;
+      this.pagination.totalRecords = meta.totalRecords;
+
+      // ✅ Calculate "Showing X to Y of Z entries"
+      this.showingFrom = this.pagination.totalRecords === 0 ? 0 : (this.pagination.currentPage - 1) * this.pagination.pageSize + 1;
+      this.showingTo = Math.min(this.pagination.currentPage * this.pagination.pageSize, this.pagination.totalRecords);
+    }
+  }
+
+  // 🚀 Fetch receipts based on filters
+  async getFilteredReceipts(): Promise<void> {
+    console.log('🔍 Applying Filters...');
+    await this.fetchReceipts(1);
+  }
+
+  // 🚀 Pagination Navigation
+  async goToPage(page: number): Promise<void> {
+    if (page >= 1 && page <= this.pagination.lastPage) {
+      await this.fetchReceipts(page);
+    }
+  }
+
+  // 🚀 Toggle Filter Visibility
   toggleFilter(): void {
     this.isFilterVisible = !this.isFilterVisible;
   }
 
-  // 🚀 Fetch receipts based on filter
-  async getFilteredReceipts(): Promise<void> {
-    const filters = this.filterForm.value;
-    await this.appService.getReceiptsForCompany(filters);
-  }
-
-  // 🚀 Navigate to Receipt Entry (Create New)
+  // 🚀 Navigate to Receipt Entry (Create/Edit)
   navigateTo(route: string): void {
     this.router.navigate([route]);
   }
@@ -70,8 +101,19 @@ export class ReceiptBookComponent implements OnInit {
   // 🚀 Delete Receipt
   async deleteReceipt(receiptId: number): Promise<void> {
     if (confirm('Are you sure you want to delete this receipt?')) {
-      this.appService.deleteReceipt(receiptId);
-      await this.getFilteredReceipts(); // Refresh receipts after deletion
+      await this.appService.deleteReceipt(receiptId);
+      await this.fetchReceipts(this.pagination.currentPage);
     }
+  }
+
+  navigateToPrint(): void {
+    const filters = this.filterForm.value;
+    const queryParams = {
+      date_from: filters.date_from || '',
+      date_to: filters.date_to || '',
+      payment_type: filters.payment_type || '',
+      page: this.pagination.currentPage
+    };
+    this.router.navigate(['/book-keeping/receipt-book/receipt-report'], { queryParams });
   }
 }

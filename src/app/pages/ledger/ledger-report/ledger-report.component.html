@@ -1,0 +1,96 @@
+<section class="content">
+    <div class="container-fluid">
+      <div class="col-md-12">
+        <div class="card card-outline card-primary">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-9"><h3>Ledger Report</h3></div>
+              <div class="col-md-3 text-right">
+                <button class="btn btn-secondary" (click)="toggleFilter()">
+                  <i class="fas" [ngClass]="{ 'fa-chevron-down': !isFilterVisible, 'fa-chevron-up': isFilterVisible }"></i>
+                  Filter
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-body" [@filterAnimation]="isFilterVisible ? 'open' : 'closed'">
+            <form [formGroup]="filterForm" (ngSubmit)="loadLedgerData()">
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="account_id">Account</label>
+                  <select id="account_id" class="form-control" formControlName="account_id">
+                    <option *ngFor="let account of (accounts$ | async)" [value]="account.id">{{ account.name }}</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="date_from">From Date</label>
+                  <input type="date" id="date_from" class="form-control" formControlName="date_from">
+                </div>
+                <div class="col-md-4">
+                  <label for="date_to">To Date</label>
+                  <input type="date" id="date_to" class="form-control" formControlName="date_to">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-4 d-flex align-items-center">
+                  <label for="monthly_closing" class="mb-0 mr-2">Monthly Closing</label>
+                  <input type="checkbox" id="monthly_closing" class="form-check-input" formControlName="monthly_closing">
+                </div>
+                <div class="col-md-8 text-right">
+                  <button type="submit" class="btn btn-primary">Apply Filter</button>
+                  <button type="button" class="btn btn-success ml-2" (click)="printContainer()">Print Ledger</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="print-container" >
+      <div *ngIf="filterForm.value.monthly_closing">
+        <pre>
+          {{ selectedCompany?.name }}
+        
+          Ledger Report For The Date {{ filterForm.value.date_from }} To {{ filterForm.value.date_to }}
+          -----------------------------------------------------------------------------------------
+          Date      |       Ref      |     Particulars                   |   Credit   |  Debit
+          -----------------------------------------------------------------------------------------
+        
+        <ng-container *ngFor="let entry of ledgerEntries | keyvalue">
+          {{ (entry.key | date:'MMM-yyyy').padEnd(10) }}|{{ ''.padEnd(16) }}|Opening Balance -->{{''.padEnd(16)}}|{{ (entry.value.opening_balance | number:'1.2-2').padEnd(12) }}|
+          <ng-container *ngFor="let txn of entry.value.transactions">
+          {{ (txn.date | date:'dd-MM-yyyy').padEnd(10) }}|{{ ''.padEnd(1) }}{{txn.transaction_no}}{{ ''.padEnd(1) }}|{{ txn.account.name.padEnd(35) }}|{{ txn.transaction_type === 'credit' ? (txn.amount | number:'1.2-2') : ''.padEnd(12) }}|{{ txn.transaction_type === 'debit' ? (txn.amount | number:'1.2-2') : ''.padEnd(12) }}
+          {{ ''.padEnd(10) }}|{{''.padEnd(16)}}|{{ (txn.particulars || '').padEnd(35)}}|{{ ''.padEnd(12) }}|{{ ''.padEnd(12) }}
+          </ng-container>
+          -----------------------------------------------------------------------------------------
+          {{ ''.padEnd(27) }}|            Date Total -->   {{ ''.padEnd(6) }}|{{ (entry.value.credit_total | number:'1.2-2').padEnd(12) }}|{{ entry.value.debit_total | number:'1.2-2' }}
+          {{ ''.padEnd(27) }}|            Date Balance --> {{ ''.padEnd(6) }}|{{ (entry.value.closing_balance | number:'1.2-2').padEnd(12) }}|
+          -----------------------------------------------------------------------------------------
+        </ng-container>
+          -----------------------------------------------------------------------------------------
+          </pre>
+        </div>
+      <div *ngIf="!filterForm.value.monthly_closing">
+          <pre>
+                {{ selectedCompany?.name }}
+        
+              GA/c. Ledger For The Date {{ filterForm.value.date_from }} To {{ filterForm.value.date_to }}
+        
+          Account Name :- {{ selectedCompany?.name }}                       
+          ------------------------------------------------------------------------------------------
+          Date      |       Ref      |          Particulars              |   Credit   |    Debit      
+          ------------------------------------------------------------------------------------------
+          <ng-container *ngFor="let txn of monthlyLedger.transactions">
+          {{ (txn.date | date:'dd-MM-yyyy').padEnd(10) }}|{{ ''.padEnd(1) }}{{txn.transaction_no}}{{ ''.padEnd(1) }}|{{ (txn.particulars || '').padEnd(35) }}|{{ txn.transaction_type === 'credit' ? (txn.amount | number:'1.2-2').padEnd(12) : ''.padEnd(12) }}|{{ txn.transaction_type === 'debit' ? (txn.amount | number:'1.2-2').padEnd(12) : ''.padEnd(12) }}
+          </ng-container>
+          ------------------------------------------------------------------------------------------
+          {{ ''.padEnd(27) }}|               Total -->           |{{ (monthlyLedger.credit_total | number:'1.2-2').padEnd(12) }}|{{ monthlyLedger.debit_total | number:'1.2-2' }}
+          {{ ''.padEnd(27) }}|               Balance -->         |{{ ''.padEnd(12) }}|{{ (monthlyLedger.closing_balance | number:'1.2-2').padEnd(12) }}
+          ------------------------------------------------------------------------------------------
+  
+          </pre>
+      </div>
+    </div>
+  </section>
+  

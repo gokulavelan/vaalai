@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AuthInterceptor } from '@services/api.service';
@@ -12,7 +12,7 @@ import {HeaderComponent} from '@modules/main/header/header.component';
 import {FooterComponent} from '@modules/main/footer/footer.component';
 import {MenuSidebarComponent} from '@modules/main/menu-sidebar/menu-sidebar.component';
 import {BlankComponent} from '@pages/blank/blank.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import {ProfileComponent} from '@pages/profile/profile.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RegisterComponent} from '@modules/register/register.component';
@@ -65,6 +65,13 @@ import { NewGroupComponent } from '@pages/masters/account-master/sub-groups/new-
 import { NewSubgroupComponent } from '@pages/masters/account-master/sub-groups/new-subgroup/new-subgroup.component';
 import { paymentReducer } from './store/payment/reducer';
 import { receiptReducer } from './store/receipt/reducer';
+import { metaReducer } from './store/metaPages/reducer';
+import { PaymentReportComponent } from '@pages/payment/payment-report/payment-report.component';
+import { ReceiptReportComponent } from '@pages/receipt/receipt-report/receipt-report.component';
+import { DaybookReportComponent } from '@pages/daybook/daybook-report/daybook-report.component';
+import { dayBookReducer } from './store/daybook/reducer';
+import { LedgerReportComponent } from '@pages/ledger/ledger-report/ledger-report.component';
+import { ledgerMonthlyReducer, ledgerReducer } from './store/ledger/reducer';
 
 registerLocaleData(localeEn, 'en-EN');
 
@@ -109,7 +116,11 @@ export function localStorageSyncReducer(reducer: any) {
         PaymentEntryComponent,
         PaymentBookComponent,
         NewGroupComponent,
-        NewSubgroupComponent
+        NewSubgroupComponent,
+        PaymentReportComponent,
+        ReceiptReportComponent,
+        DaybookReportComponent,
+        LedgerReportComponent
     ],
     imports: [
         ProfabricComponentsModule,
@@ -122,10 +133,15 @@ export function localStorageSyncReducer(reducer: any) {
                              group: groupReducer,
                              subGroup: subGroupReducer,
                              payment: paymentReducer,
-                             receipt: receiptReducer},
+                             receipt: receiptReducer,
+                             meta: metaReducer,
+                             daybook: dayBookReducer,
+                             ledger: ledgerReducer,
+                             monthlyLedger: ledgerMonthlyReducer},
                              { metaReducers: [localStorageSyncReducer] }),
         HttpClientModule,
         AppRoutingModule,
+        FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot({
@@ -139,6 +155,7 @@ export function localStorageSyncReducer(reducer: any) {
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

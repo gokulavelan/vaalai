@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppService } from '@services/app.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { PaymentReportComponent } from '../payment-report/payment-report.component';
 
 @Component({
   selector: 'app-payment-book',
@@ -19,10 +20,15 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   ]
 })
 export class PaymentBookComponent implements OnInit {
+  @ViewChild(PaymentReportComponent) paymentPrintComponent!: PaymentReportComponent;
+  
   dtOptions: DataTables.Settings = {};
   payments$ = this.store.select(state => state.payment.transactions);
   filterForm: FormGroup;
-  isFilterVisible = false; // 🚀 Filter hidden initially
+  isFilterVisible = false;
+  pagination = { currentPage: 1, lastPage: 1, totalRecords: 0, pageSize: 10 };
+  showingFrom = 0;
+  showingTo = 0;
 
   constructor(
     private router: Router,
@@ -32,46 +38,80 @@ export class PaymentBookComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.dtOptions = { pagingType: 'full_numbers', pageLength: 10, processing: true };
+    this.dtOptions = { paging: false, info: false, searching: false };
 
-    // Initialize filter form
     this.filterForm = this.fb.group({
       date_from: [''],
       date_to: [''],
       payment_type: ['']
     });
 
-    // Fetch initial payments
-    await this.getFilteredPayments();
+    await this.fetchPayments(1);
   }
 
-  // 🚀 Toggle Filter Section
-  toggleFilter(): void {
-    this.isFilterVisible = !this.isFilterVisible;
+  // 🚀 Fetch payments with manual pagination
+  async fetchPayments(page: number): Promise<void> {
+    console.log('🔄 Fetching payments for page:', page);
+
+    const filters = this.filterForm.value;
+    await this.appService.getPaymentsForCompany(filters, page);
+
+    // ✅ Get updated pagination metadata
+    const meta = await firstValueFrom(this.store.select(state => state.meta));
+    if (meta) {
+      this.pagination.currentPage = meta.currentPage;
+      this.pagination.lastPage = meta.lastPage;
+      this.pagination.totalRecords = meta.totalRecords;
+
+      // ✅ Calculate "Showing X to Y of Z entries"
+      this.showingFrom = this.pagination.totalRecords === 0 ? 0 : (this.pagination.currentPage - 1) * this.pagination.pageSize + 1;
+      this.showingTo = Math.min(this.pagination.currentPage * this.pagination.pageSize, this.pagination.totalRecords);
+    }
   }
 
   // 🚀 Fetch payments based on filter
   async getFilteredPayments(): Promise<void> {
-    const filters = this.filterForm.value;
-    await this.appService.getPaymentsForCompany(filters);
+    console.log('🔍 Applying Filters...');
+    await this.fetchPayments(1);
   }
 
-  // 🚀 Navigate to Payment Entry (Create New)
+  // 🚀 Navigate between pages
+  async goToPage(page: number): Promise<void> {
+    if (page >= 1 && page <= this.pagination.lastPage) {
+      await this.fetchPayments(page);
+    }
+  }
+
+  toggleFilter(): void {
+    this.isFilterVisible = !this.isFilterVisible;
+  }
+
   navigateTo(route: string): void {
     this.router.navigate([route]);
   }
 
-  // 🚀 Edit Payment
   async editPayment(payment: any): Promise<void> {
     this.appService.getPaymentById(payment.id);
     this.router.navigate([`/book-keeping/payment-book/payment-entry/${payment.id}`]);
   }
 
-  // 🚀 Delete Payment
   async deletePayment(paymentId: number): Promise<void> {
     if (confirm('Are you sure you want to delete this payment?')) {
-      this.appService.deletePayment(paymentId);
-      await this.getFilteredPayments(); // Refresh payments after deletion  
+      await this.appService.deletePayment(paymentId);
+      await this.fetchPayments(this.pagination.currentPage);
     }
   }
+
+  navigateToPrint(): void {
+    const filters = this.filterForm.value;
+    const queryParams = {
+      date_from: filters.date_from || '',
+      date_to: filters.date_to || '',
+      payment_type: filters.payment_type || '',
+      page: this.pagination.currentPage
+    };
+    this.router.navigate(['/book-keeping/payment-book/payment-report'], { queryParams });
+  }
+  
+  
 }

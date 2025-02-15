@@ -96,12 +96,13 @@ export class ApiService {
     //#endregion
 
     //#region  Payment
-    getPayments(date_from: string = '', date_to: string = '', payment_type: string = ''): Observable<any> {
-        let queryParams = `?company_id=1`; // Fixed company_id
+    getPayments(company_id:number, date_from: string = '', date_to: string = '', payment_type: string = '',page:number): Observable<any> {
+        let queryParams = `?company_id=${company_id}`; // Fixed company_id
     
         if (date_from) queryParams += `&date_from=${date_from}`;
         if (date_to) queryParams += `&date_to=${date_to}`;
         if (payment_type) queryParams += `&payment_type=${payment_type}`;
+        if (page) queryParams += `&page=${page}`
     
         return this.http.get(`${this.baseUrl}/api/v1/payments${queryParams}`);
     }
@@ -121,16 +122,26 @@ export class ApiService {
     deletePayment(paymentId: number): Observable<any> {
         return this.http.delete(`${this.baseUrl}/api/v1/payments/${paymentId}`);
     }
-
-    //#endregion
-
-    //#region Receipt
-    getReceipts(date_from: string = '', date_to: string = '', payment_type: string = ''): Observable<any> {
-        let queryParams = '?company_id=1'; // Fixed company_id
+    getPaymentsForReport(company_id:number,date_from: string = '', date_to: string = '', payment_type: string = ''): Observable<any> {
+        let queryParams = `?company_id=${company_id}`; // Fixed company_id
     
         if (date_from) queryParams += `&date_from=${date_from}`;
         if (date_to) queryParams += `&date_to=${date_to}`;
         if (payment_type) queryParams += `&payment_type=${payment_type}`;
+    
+        return this.http.get(`${this.baseUrl}/api/v1/paymentsReport${queryParams}`);
+    }
+
+    //#endregion
+
+    //#region Receipt
+    getReceipts(company_id:number,date_from: string = '', date_to: string = '', payment_type: string = '',page:number = 0): Observable<any> {
+        let queryParams = `?company_id=${company_id}`; // Fixed company_id
+    
+        if (date_from) queryParams += `&date_from=${date_from}`;
+        if (date_to) queryParams += `&date_to=${date_to}`;
+        if (payment_type) queryParams += `&payment_type=${payment_type}`;
+        if (page) queryParams += `&page=${page}`;
     
         return this.http.get(`${this.baseUrl}/api/v1/receipts${queryParams}`);
     }
@@ -150,7 +161,40 @@ export class ApiService {
     deleteReceipt(receiptId: number): Observable<any> {
         return this.http.delete(`${this.baseUrl}/api/v1/receipts/${receiptId}`);
     }
+    getReceiptsForReport(company_id:number,date_from: string = '', date_to: string = '', payment_type: string = ''): Observable<any> {
+        let queryParams = `?company_id=${company_id}`; // Fixed company_id
+    
+        if (date_from) queryParams += `&date_from=${date_from}`;
+        if (date_to) queryParams += `&date_to=${date_to}`;
+        if (payment_type) queryParams += `&payment_type=${payment_type}`;
+    
+        return this.http.get(`${this.baseUrl}/api/v1/receiptsReport${queryParams}`);
+    }
     //#endregion
+
+    //#region  Day Book
+    getDayBook(fromDate: string = '', toDate: string = '', companyId: number): Observable<any> {
+        let queryParams = `?company_id=${companyId}`;
+      
+        if (fromDate) queryParams += `&date_from=${fromDate}`;
+        if (toDate) queryParams += `&date_to=${toDate}`;
+      
+        return this.http.get(`${this.baseUrl}/api/v1/daybook${queryParams}`);
+      }
+      
+    //#endregion
+    //#region Ledger Book
+    getLedgerBook(accountId: number, fromDate: string = '', toDate: string = '', monthlyClosing: boolean = false): Observable<any> {
+        let queryParams = `?account_id=${accountId}`;
+        
+        if (fromDate) queryParams += `&date_from=${fromDate}`;
+        if (toDate) queryParams += `&date_to=${toDate}`;
+        if (monthlyClosing) queryParams += `&monthly_closing=${monthlyClosing}`;
+    
+        return this.http.get(`${this.baseUrl}/api/v1/ledger${queryParams}`);
+    }
+    //#endregion
+    
 }
 
 

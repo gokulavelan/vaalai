@@ -14,7 +14,6 @@ export class UserComponent implements OnInit {
 
     ngOnInit(): void {
         this.user = this.appService.user;
-        console.log(this.user);
         
     }
 

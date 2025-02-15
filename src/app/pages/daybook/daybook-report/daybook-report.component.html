@@ -1,0 +1,73 @@
+<section class="content">
+    <div class="container-fluid">
+      <div class="col-md-12">
+        <div class="card card-outline card-primary">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-9"><h3>Day Book Report</h3></div>
+              <div class="col-md-3 text-right">
+                <button class="btn btn-secondary" (click)="toggleFilter()">
+                  <i class="fas" [ngClass]="{ 'fa-chevron-down': !isFilterVisible, 'fa-chevron-up': isFilterVisible }"></i>
+                  Filter
+                </button>
+              </div>
+            </div>
+          </div>
+  
+          <!-- 🚀 Filter Section -->
+          <div class="card-body" [@filterAnimation]="isFilterVisible ? 'open' : 'closed'">
+            <form [formGroup]="filterForm" (ngSubmit)="loadDayBookData()">
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="from_date">From Date</label>
+                  <input type="date" id="from_date" class="form-control" formControlName="from_date">
+                </div>
+                <div class="col-md-4">
+                  <label for="to_date">To Date</label>
+                  <input type="date" id="to_date" class="form-control" formControlName="to_date">
+                </div>
+                <div class="col-md-4">
+                  <label for="financial_year">Financial Year</label>
+                  <select id="financial_year" class="form-control" formControlName="financial_year">
+                    <option *ngFor="let year of financialYears" [value]="year.label">{{ year.label }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-12 text-right">
+                  <button type="submit" class="btn btn-primary">Apply Filter</button>
+                  <button type="button" class="btn btn-success ml-2" (click)="printContainer()">Print Day Book</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- 🚀 Print View -->
+    <div class="print-container">
+        <pre>
+                                    {{ selectedCompany?.name || '' }}
+           
+        Day-Book Printing For The Date {{ filterForm.value.from_date }} To {{ filterForm.value.to_date }}
+        ---------------------------------------------------------------------------------------
+        Date      |       Ref      |     Particulars                   |   Credit   |  Debit
+        ---------------------------------------------------------------------------------------
+      <ng-container *ngFor="let entry of dayBookEntries | keyvalue">
+        {{ (entry.key | date:'dd-MM-yyyy').padEnd(10) }}|{{ ''.padEnd(16) }}|Opening Balance -->{{''.padEnd(16)}}|{{ (entry.value.opening_balance | number:'1.2-2').padEnd(12) }}|             
+        <ng-container *ngFor="let txn of entry.value.transactions" class="no-gap">
+          {{ ''.padEnd(8) }}|{{ ''.padEnd(1) }}{{txn.transaction_no}}{{ ''.padEnd(1) }}|{{ txn.account.name.padEnd(35) }}|{{ txn.transaction_type === 'credit' ? (txn.amount | number:'1.2-2') : ''.padEnd(12) }}|{{ txn.transaction_type === 'debit' ? (txn.amount | number:'1.2-2') : ''.padEnd(12) }}
+          {{ ''.padEnd(8) }}|{{''.padEnd(16)}}|{{ (txn.particulars || '').padEnd(35)}}|{{ ''.padEnd(12) }}|{{ ''.padEnd(12) }}
+        </ng-container>
+        ---------------------------------------------------------------------------------------
+        {{ ''.padEnd(27) }}|            Date Total -->   {{ ''.padEnd(6) }}|{{ (entry.value.credit_total | number:'1.2-2').padEnd(12) }}|{{ entry.value.debit_total | number:'1.2-2' }}
+        {{ ''.padEnd(27) }}|            Date Balance --> {{ ''.padEnd(6) }}|{{ (entry.value.closing_balance | number:'1.2-2').padEnd(12) }}|
+        ---------------------------------------------------------------------------------------
+      </ng-container>
+        ---------------------------------------------------------------------------------------
+        </pre>
+      </div>
+      
+  </section>
+  

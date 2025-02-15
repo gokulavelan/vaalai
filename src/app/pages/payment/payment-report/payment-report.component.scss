@@ -1,0 +1,16 @@
+.print-container {
+    font-family: monospace;
+    white-space: pre;
+  }
+  
+  .print-button {
+    margin-top: 20px;
+    display: block;
+  }
+  
+  @media print {
+    .print-button {
+      display: none;
+    }
+  }
+  
