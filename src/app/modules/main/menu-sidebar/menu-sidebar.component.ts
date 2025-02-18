@@ -68,6 +68,11 @@ export const MENU = [
         iconClasses: 'fas fa-folder',
         children: [
             {
+                name: 'Company',
+                iconClasses: 'fas fa-tachometer-alt',
+                path: ['/company-master']
+            },
+            {
                 name: 'Accounts',
                 iconClasses: 'far fa-address-book',
                 children: [

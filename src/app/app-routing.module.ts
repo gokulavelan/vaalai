@@ -30,6 +30,8 @@ import { PaymentReportComponent } from '@pages/payment/payment-report/payment-re
 import { ReceiptReportComponent } from '@pages/receipt/receipt-report/receipt-report.component';
 import { DaybookReportComponent } from '@pages/daybook/daybook-report/daybook-report.component';
 import { LedgerReportComponent } from '@pages/ledger/ledger-report/ledger-report.component';
+import { CompanyMasterComponent } from '@pages/masters/company-master/company-master.component';
+import { NewCompanyComponent } from '@pages/masters/company-master/new-company/new-company.component';
 
 const routes: Routes = [
     {
@@ -171,8 +173,22 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'sub-menu-2',
-                component: SubMenuComponent
+                path: 'company-master',
+                children: [
+                    {
+                        path: '',
+                        component: CompanyMasterComponent
+                    },
+                    {
+                        path: 'new-company',
+                        component: NewCompanyComponent
+                    },
+                    {
+                        path: 'edit-company/:id',
+                        component: NewCompanyComponent
+                    }
+
+                ]
             },
             {
                 path: 'sub-menu-2',

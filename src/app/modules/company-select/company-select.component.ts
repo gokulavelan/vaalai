@@ -21,27 +21,27 @@ constructor(
 
   
   
-ngOnInit(){
-  this.renderer.addClass(
-      document.querySelector('app-root'),
-      'login-page'
-  );
-  this.appService.getCompanies();
-  this.companySelectForm = new UntypedFormGroup({
-    company: new UntypedFormControl('default', Validators.required),
-    financialYear: new UntypedFormControl('default', Validators.required)
-  });
-  console.log(this.companies$);
-  
-}
-onSubmit() {
-  console.log('works');
-  if (this.companySelectForm.valid) {
-    const selectedCompanyId = this.companySelectForm.value.company;
-    this.store.dispatch(new SelectCompany(selectedCompanyId));
+  ngOnInit(){
+    this.renderer.addClass(
+        document.querySelector('app-root'),
+        'login-page'
+    );
+    this.appService.getCompanies();
+    this.companySelectForm = new UntypedFormGroup({
+      company: new UntypedFormControl('default', Validators.required),
+      financialYear: new UntypedFormControl('default', Validators.required)
+    });
+    console.log(this.companies$);
+    
   }
-  this.router.navigate(['/']);
-  }
+  onSubmit() {
+    console.log('works');
+    if (this.companySelectForm.valid) {
+      const selectedCompanyId = this.companySelectForm.value.company;
+      this.store.dispatch(new SelectCompany(selectedCompanyId));
+    }
+    this.router.navigate(['/']);
+    }
 
   ngOnDestroy() {
     this.renderer.removeClass(

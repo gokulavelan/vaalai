@@ -13,7 +13,11 @@ export function companyReducer(state: CompanyState = initialCompanyState, action
                 ...state,
                 selectedCompany: selectedCompany || null
             };
-        
+        case CompanyActions.CREATE_COMPANY:
+            return {
+                ...state,
+                createCompany: action.payload
+            };
         case CompanyActions.CLEAR_COMPANIES:
             return {
                 ...state,

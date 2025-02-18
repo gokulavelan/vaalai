@@ -1,0 +1,15 @@
+<pf-dropdown [hideArrow]="true">
+    <div slot="head">
+      <a class="nav-link">
+        <!-- <i class="fas fa-building mr-2"></i> -->
+        <span>{{ (selectedCompany$ | async)?.name || 'Select Company' }}</span>
+      </a>
+    </div>
+    <div slot="body">
+      <a *ngFor="let company of (companies$ | async)" href="#" class="dropdown-item" (click)="selectCompany(company.id)">
+        <i class="fas fa-building mr-2"></i>
+        <span>{{ company.name }}</span>
+      </a>
+    </div>
+  </pf-dropdown>
+  

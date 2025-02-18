@@ -1,11 +1,13 @@
 export interface CompanyState {
     companies: Company[];  // List of companies
     selectedCompany: Company | null;  // Selected company details
+    createCompany: Company | null;
 }
 
 export const initialCompanyState: CompanyState = {
     companies: [],
-    selectedCompany: null
+    selectedCompany: null,
+    createCompany: null
 };
 
 export interface Company {

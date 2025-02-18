@@ -7,6 +7,7 @@ import { Group, SubGroup } from '@/store/groups/state';
 import { Account } from '@/store/account/state';
 import { Payment } from '@/store/payment/state';
 import { Receipt } from '@/store/receipt/state';
+import { Company } from '@/store/company/state';
 @Injectable({
     providedIn: 'root'
 })
@@ -24,10 +25,30 @@ export class ApiService {
     }
 
 
+    //#region company
     getCompanies(): Observable<any>{
         return this.http.get(`${this.baseUrl}/api/v1/companies`);
     }
+    setCompany(body: Company): Observable<any> {
+        console.log(body);
+        
+        return this.http.post(`${this.baseUrl}/api/v1/companies`, body);
+    }
 
+    getCompanyById(companyId: number): Observable<any> {
+        return this.http.get(`${this.baseUrl}/api/v1/companies/${companyId}`);
+    }
+
+    updateCompany(companyId: number, company: Partial<Company>): Observable<any> {
+        return this.http.put(`${this.baseUrl}/api/v1/companies/${companyId}`, company);
+    }
+
+    deleteCompany(companyId: number): Observable<any> {
+        return this.http.delete(`${this.baseUrl}/api/v1/companies/${companyId}`);
+    }
+    //#endregion
+    
+    //#region  accounts
     getAccounts(company_id:number = null): Observable<any>{
         return this.http.get(`${this.baseUrl}/api/v1/accountswithSubGroup?company_id=${company_id}`);
     }
@@ -48,7 +69,7 @@ export class ApiService {
         return this.http.delete(`${this.baseUrl}/api/v1/accounts/${accountId}`);
     }
 
-
+    //#endregion
 
     //#region groups
     getGroups(): Observable<any>{
@@ -183,6 +204,7 @@ export class ApiService {
       }
       
     //#endregion
+ 
     //#region Ledger Book
     getLedgerBook(accountId: number, fromDate: string = '', toDate: string = '', monthlyClosing: boolean = false): Observable<any> {
         let queryParams = `?account_id=${accountId}`;

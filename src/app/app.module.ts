@@ -72,6 +72,9 @@ import { DaybookReportComponent } from '@pages/daybook/daybook-report/daybook-re
 import { dayBookReducer } from './store/daybook/reducer';
 import { LedgerReportComponent } from '@pages/ledger/ledger-report/ledger-report.component';
 import { ledgerMonthlyReducer, ledgerReducer } from './store/ledger/reducer';
+import { CompanyComponent } from '@modules/main/header/company/company.component';
+import { CompanyMasterComponent } from '@pages/masters/company-master/company-master.component';
+import { NewCompanyComponent } from '@pages/masters/company-master/new-company/new-company.component';
 
 registerLocaleData(localeEn, 'en-EN');
 
@@ -120,7 +123,10 @@ export function localStorageSyncReducer(reducer: any) {
         PaymentReportComponent,
         ReceiptReportComponent,
         DaybookReportComponent,
-        LedgerReportComponent
+        LedgerReportComponent,
+        CompanyComponent,
+        CompanyMasterComponent,
+        NewCompanyComponent
     ],
     imports: [
         ProfabricComponentsModule,

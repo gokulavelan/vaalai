@@ -5,7 +5,7 @@ import { sleep } from '@/utils/helpers';
 import { ApiService } from './api.service';
 import { firstValueFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { SetCompanies, ClearCompanies } from '@/store/company/actions';
+import { SetCompanies, ClearCompanies, SelectCompany, CreateCompany } from '@/store/company/actions';
 import { SelectAccount, SetAccounts } from '@/store/account/actions';
 import { AppState } from '@/store/state';
 import { SelectGroup, SelectSubGroup, SetGroups, SetSubGroups } from '@/store/groups/actions';
@@ -86,6 +86,8 @@ export class AppService {
         }
     }
 
+    //#region company
+
     async getCompanies(){
       try 
       {
@@ -101,6 +103,71 @@ export class AppService {
           this.toastr.error(error.error?.message || 'Error loading companies');
       }
     }
+
+    async setCompany() {
+        try {
+          const selectedCompanyState = await firstValueFrom(this.store.select(state => state.company.createCompany));
+          console.log(selectedCompanyState);
+          
+          const response = await firstValueFrom(this.apiService.setCompany(selectedCompanyState));
+          
+          if (response?.response?.status === 'success') {
+            this.router.navigate(['/company-management']);
+            this.toastr.success(response.response.message);
+          } else {
+            this.toastr.error(response.response.message || 'Failed to create company');
+          }
+        } catch (error) {
+          this.toastr.error(error.error?.message || 'Error creating company');
+        }
+      }
+    
+      async getCompanyById(companyId: number) {
+        try {
+          const response = await firstValueFrom(this.apiService.getCompanyById(companyId));
+    
+          if (response?.response?.status === 'success') {
+            this.store.dispatch(new CreateCompany(response.data));
+          } else {
+            this.toastr.error(response.response.message || 'Failed to retrieve company');
+          }
+        } catch (error) {
+          this.toastr.error(error.error?.message || 'Error fetching company details');
+        }
+      }
+    
+      async updateCompany(companyId: number) {
+        try {
+          const selectedCompanyState = await firstValueFrom(this.store.select(state => state.company.createCompany));
+          const response = await firstValueFrom(this.apiService.updateCompany(companyId, selectedCompanyState));
+    
+          if (response?.response?.status === 'success') {
+            this.router.navigate(['/company-management']);
+            this.toastr.success(response.response.message);
+          } else {
+            this.toastr.error(response.response.message || 'Failed to update company');
+          }
+        } catch (error) {
+          this.toastr.error(error.error?.message || 'Error updating company');
+        }
+      }
+    
+      async deleteCompany(companyId: number) {
+        try {
+          const response = await firstValueFrom(this.apiService.deleteCompany(companyId));
+    
+          if (response?.response?.status === 'success') {
+            this.toastr.success(response.response.message);
+            this.store.dispatch(new SetCompanies([])); // Clear state after delete
+          } else {
+            this.toastr.error(response.response.message || 'Failed to delete company');
+          }
+        } catch (error) {
+          this.toastr.error(error.error?.message || 'Error deleting company');
+        }
+      }
+
+    //#endregion
 
 //#region  accounts
 

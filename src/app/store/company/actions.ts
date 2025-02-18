@@ -1,12 +1,18 @@
 import { Action } from '@ngrx/store';
 
+export const CREATE_COMPANY = 'CREATE_COMPANY';
 export const LOAD_COMPANIES = 'LOAD_COMPANIES';
 export const SET_COMPANIES = 'SET_COMPANIES';
 export const CLEAR_COMPANIES = 'CLEAR_COMPANIES';
 export const SELECT_COMPANY = 'SELECT_COMPANY';
 
+export class CreateCompany implements Action {
+    readonly type = CREATE_COMPANY;
+    constructor(public payload: any) {}  // Store new company data
+}
+
 export class LoadCompanies implements Action {
-    readonly type = LOAD_COMPANIES;
+    readonly type = LOAD_COMPANIES; 
 }
 
 export class SetCompanies implements Action {
@@ -23,4 +29,4 @@ export class SelectCompany implements Action {
     constructor(public payload: number) {}  // Store company ID
 }
 
-export type CompanyActions = SelectCompany  | LoadCompanies | SetCompanies | ClearCompanies;
+export type CompanyActions = CreateCompany | SelectCompany  | LoadCompanies | SetCompanies | ClearCompanies;

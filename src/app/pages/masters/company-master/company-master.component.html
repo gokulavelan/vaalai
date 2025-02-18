@@ -1,0 +1,63 @@
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Company Management</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#" [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item active">Companies</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="content">
+    <div class="container-fluid">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-9">
+                <h3>Company List</h3>
+              </div>
+              <div class="col-md-3">
+                <button class="btn btn-block btn-primary" (click)="navigateTo('/company-master/new-company')">New</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <table datatable [dtOptions]="dtOptions" class="row-border hover">
+              <thead>
+                <tr>
+                  <th>Company Name</th>
+                  <th>City</th>
+                  <th>Email</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let company of (companies$ | async)">
+                  <td>{{ company.name }} {{ company.surname }}</td>
+                  <td>{{ company.city }}</td>
+                  <td>{{ company.email }}</td>
+                  <td class="project-actions">
+                    <a class="btn btn-info btn-sm" (click)="editCompany(company)">
+                      <i class="fas fa-pencil-alt"></i> Edit
+                    </a>
+                    &nbsp;
+                    <a class="btn btn-danger btn-sm" (click)="deleteCompany(company.id)">
+                      <i class="fas fa-trash"></i> Delete
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
