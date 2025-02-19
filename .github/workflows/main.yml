@@ -33,7 +33,7 @@ jobs:
         run: npm run build -- --configuration=production --base-href="/vaalai/"
 
       - name: Deploy to GitHub Pages
-        run: npx angular-cli-ghpages --dir=dist/vaalai
+        run: npx angular-cli-ghpages --dir=dist/vaalai --branch=gh-pages
         env:
           CI: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
