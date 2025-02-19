@@ -112,7 +112,7 @@ export class AppService {
           const response = await firstValueFrom(this.apiService.setCompany(selectedCompanyState));
           
           if (response?.response?.status === 'success') {
-            this.router.navigate(['/company-management']);
+            this.router.navigate(['/company-master']);
             this.toastr.success(response.response.message);
           } else {
             this.toastr.error(response.response.message || 'Failed to create company');
@@ -142,7 +142,7 @@ export class AppService {
           const response = await firstValueFrom(this.apiService.updateCompany(companyId, selectedCompanyState));
     
           if (response?.response?.status === 'success') {
-            this.router.navigate(['/company-management']);
+            this.router.navigate(['/company-master']);
             this.toastr.success(response.response.message);
           } else {
             this.toastr.error(response.response.message || 'Failed to update company');
