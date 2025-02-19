@@ -22,15 +22,12 @@ jobs:
         run: |
           echo "GA_ID=${{ secrets.GA_ID }}" > .env
           echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
-
+          
       - name: Install dependencies
-        run: npm ci
-
-      - name: Run setEnv.ts script
-        run: node setEnv.ts --environment=prod
+        run: npm ci # Use npm ci for faster installs and consistency in CI
 
       - name: Build Angular project
-        run: npm run build -- --configuration=production
+        run: npm run build -- --configuration=production # Ensure the correct build command
 
       - name: Run tests
         run: npm test
