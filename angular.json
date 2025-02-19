@@ -51,6 +51,8 @@
           },
           "configurations": {
             "production": {
+              "outputPath": "dist/vaalai",
+              "baseHref": "/vaalai/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
