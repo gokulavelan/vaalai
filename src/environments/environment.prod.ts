@@ -3,5 +3,5 @@
   export const environment = {
     production: true,
     GA_ID: 'YOUR_GOOGLE_ANALYTICS_ID',
-    base_url : 'https://laravel-api.dmkengwing.com'
+    base_url : 'https://api.dmkengwing.com'
   };
