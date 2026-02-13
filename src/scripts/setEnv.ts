@@ -46,7 +46,7 @@ const environmentFileContent = `
   export const environment = {
     production: ${isProduction},
     GA_ID: '${process.env.GA_ID}',
-    base_url : '${process.env.base_url}'
+    base_url : '${process.env.BASE_URL}'
   };
 `;
 
