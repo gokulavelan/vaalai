@@ -4,5 +4,5 @@
     GA_ID: 'undefined',
 
    //base_url : 'http://127.0.0.1:8000'
-    base_url : 'https://laravel-api.dmkengwing.com'
+    base_url : 'https://api.dmkengwing.com'
   };
