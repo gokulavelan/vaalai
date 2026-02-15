@@ -37,7 +37,7 @@ export class PaymentEntryComponent implements OnInit {
       transaction_no: [{ value: '', disabled: true }],
       transaction_type: ['debit'], // Fixed value for payment
       date: [this.todayDate, Validators.required],
-      payment_type: ['Cash', Validators.required],
+      payment_type: ['cash', Validators.required],
       account_id: ['', Validators.required],
       bank_name: [{ value: '', disabled: true }],
       particulars: [''],
@@ -110,6 +110,8 @@ export class PaymentEntryComponent implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
+    console.log(this.paymentForm);
+    
     if (this.paymentForm.valid) {
       const paymentData = {
         id: this.isEditMode && this.paymentId ? this.paymentId : undefined,

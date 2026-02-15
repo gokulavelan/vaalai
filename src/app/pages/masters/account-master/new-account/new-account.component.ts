@@ -86,6 +86,9 @@ export class NewAccountComponent {
     });
   }
 
+  get f() {
+    return this.accountForm.controls;
+  }
   async loadAccountData(accountId: number): Promise<void> {
     try {
       // Fetch account data from API and store it in state
@@ -136,6 +139,10 @@ export class NewAccountComponent {
 
   async onSubmit(): Promise<void> {
     console.log(this.accountForm.valid);
+        if (this.accountForm.invalid) {
+        this.accountForm.markAllAsTouched();
+        return;
+      }
       if (this.accountForm.valid) {
         // Preserve the ID if editing, otherwise use form data
         const accountToSave = this.isEditMode && this.accountId

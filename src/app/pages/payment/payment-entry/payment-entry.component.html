@@ -56,6 +56,7 @@
             <div class="form-group">
               <label for="account_id">Account Name</label>
               <select id="account_id" formControlName="account_id" class="form-control">
+                <option value="" disabled selected>Select Account</option>
                 <option *ngFor="let account of (accounts$ | async)" [value]="account.id">
                   {{ account.name }}
                 </option>
